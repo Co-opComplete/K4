@@ -1,0 +1,21 @@
+{
+    "name": "k4-proxy",
+    "version": "0.1.0",
+    "description": "Middleware service for proxying commands to and from K4",
+    "main": "./server.js",
+    "dependencies": {
+        "socket.io": "0.9.x",
+        "nconf": "0.6.x"
+    },
+    "devDependencies": {},
+    "keywords": [
+        "websockets",
+        "robot",
+        "telepresence",
+        "K4"
+    ],
+    "contributors": [{
+        "name": "Corey Pauley",
+        "email": "corey.pauley@dealertrack.com"
+    }]
+}
