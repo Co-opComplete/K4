@@ -1,11 +1,27 @@
 <html>
     <head>
         <title>Test Remote Site</title>
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" type="text/javascript"></script>
-        <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js" type="text/javascript"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" type="text/javascript"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js" type="text/javascript"></script>
+        <script src="socket.io.js" type="text/javascript"></script>
         <script src="test-site.js" type="text/javascript"></script>
         <link rel="stylesheet" type="text/css" href="test-site.css" />
     </head>
     <body>
+        <button id="connect-button">Connect</button>
+        <button id="disconnect-button">Disconnect</button>
+
+        <div id="nav-buttons">
+            <div>
+                <button id="up-button">Up</button>
+            </div>
+            <div>
+                <button id="left-button">Left</button>
+                <button id="right-button">Right</button>
+            </div>
+            <div>
+                <button id="down-button">Down</button>
+            </div>
+        </div>
     </body>
 </html>

@@ -5,7 +5,8 @@
     "main": "./server.js",
     "dependencies": {
         "socket.io": "0.9.x",
-        "nconf": "0.6.x"
+        "nconf": "0.6.x",
+        "sugar": "1.4.x"
     },
     "devDependencies": {},
     "keywords": [

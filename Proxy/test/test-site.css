@@ -1,0 +1,22 @@
+#nav-buttons {
+    width: 125px;
+    margin: 30px 0 0 30px;
+}
+
+#nav-buttons button {
+}
+
+#up-button, #down-button {
+    margin: 0 auto;
+    display: block;
+}
+
+#left-button {
+    display: inline-block;
+    margin: 10px 35px 10px 0;
+}
+
+#right-button {
+    display: inline-block;
+    margin: 10px 0 10px 0;
+}
