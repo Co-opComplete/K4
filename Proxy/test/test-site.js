@@ -48,18 +48,22 @@ var socket;
             switch(e.which) {
                 // Up
                 case 38:
+                case 87:
                     socket.emit('up', {action: 'pressed'});
                     break;
                 // Down
                 case 40:
+                case 83:
                     socket.emit('down', {action: 'pressed'});
                     break;
                 // Left
                 case 37:
+                case 65:
                     socket.emit('left', {action: 'pressed'});
                     break;
                 // Right
                 case 39:
+                case 68:
                     socket.emit('right', {action: 'pressed'});
                     break;
                 default:
@@ -69,18 +73,22 @@ var socket;
             switch(e.which) {
                 // Up
                 case 38:
+                case 87:
                     socket.emit('up', {action: 'released'});
                     break;
                 // Down
                 case 40:
+                case 83:
                     socket.emit('down', {action: 'released'});
                     break;
                 // Left
                 case 37:
+                case 65:
                     socket.emit('left', {action: 'released'});
                     break;
                 // Right
                 case 39:
+                case 68:
                     socket.emit('right', {action: 'released'});
                     break;
                 default:
