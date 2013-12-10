@@ -8,6 +8,8 @@ var server = require('http').Server(),
     client = redis.createClient(),
     sugar = require('sugar');
 
+var clients = [];
+
 // Setup redis store for socket.io
 io.set('store', new RedisStore({
     redisPub: pub,
@@ -20,7 +22,7 @@ nconf.file({file: 'conf/config.json'});
 nconf.load();
 
 io.of('/remote').on('connection', function(socket){
-    socket.emit('event', {hello: 'world'});
+    clients.push(socket);
 
     socket.on('response', function(data){
         console.log(data);
@@ -28,6 +30,8 @@ io.of('/remote').on('connection', function(socket){
 
     socket.on('disconnect', function(){
         console.log('Disconnecting');
+        var i = clients.indexOf(socket);
+        clients.splice(i, 1);
     });
 
     // Up Action
@@ -51,4 +55,4 @@ io.of('/remote').on('connection', function(socket){
     });
 });
 
-server.listen(3000);
+server.listen(3001);
