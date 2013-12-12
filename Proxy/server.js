@@ -1,4 +1,6 @@
-var server = require('http').Server(),
+var express = require('express'),
+    app = express(),
+    server = require('http').createServer(app),
     io = require('socket.io').listen(server),
     nconf = require('nconf'),
     RedisStore = require('socket.io/lib/stores/redis'),
@@ -6,7 +8,11 @@ var server = require('http').Server(),
     pub = redis.createClient(),
     sub = redis.createClient(),
     client = redis.createClient(),
-    sugar = require('sugar');
+    sugar = require('sugar'),
+    swig = require('swig'),
+    port = 3000;
+
+server.listen(port);
 
 var clients = [];
 
@@ -55,4 +61,21 @@ io.of('/remote').on('connection', function(socket){
     });
 });
 
-server.listen(3001);
+/*******************************
+------ Setup for Express -------
+********************************/
+app.use(express.bodyParser());
+app.use('/static', express.static('static'));
+// Swig Templating Engine
+app.engine('html', swig.renderFile);
+app.set('view engine', 'html');
+app.set('views', __dirname + '/views');
+app.set('view cache', false);
+swig.setDefaults({cache: false});
+
+/*******************************
+------ Express routes ----------
+********************************/
+app.get('/', function(req, res){
+    res.render('base', {port: port});
+});
