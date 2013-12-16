@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Test Remote Site</title>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" type="text/javascript"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js" type="text/javascript"></script>
+        <script src="socket.io.js" type="text/javascript"></script>
+        <script src="test-site.js" type="text/javascript"></script>
+        <link rel="stylesheet" type="text/css" href="test-site.css" />
+		<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+		<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+		<div class="btn-group">
+			<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+				Login <span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu" role="menu">
+				<li class="dropdown">
+					<form action="" method="post" accept-charset="UTF-8">
+						<input id="name-entry" type="text" placeholder="Username" />
+						<input id="name-entry" type="password" placeholder="Password" />
+						<label>Remember me <input type="checkbox" value=1></label>
+						<button type="button" class="btn btn-primary" type="submit" name="sign-in" value="Sign In">Sign In</button>
+					</form>
+				</li>
+			</ul>
+		</div>
+	
+		<div id="connection-buttons">
+			<button id="connect-button">Connect</button>
+			<button id="disconnect-button">Disconnect</button>
+		</div>
+		
+		<div id="nav-buttons">
+            <div class="center">
+                <button id="up-button">Up</button>
+            </div>
+            <div class="center">
+                <button id="left-button">Left</button>
+                <button id="right-button">Right</button>
+            </div>
+            <div class="center">
+                <button id="down-button">Down</button>
+            </div>
+        </div>
+		
+		<div> <!-- style="margin: 20px;" >-->
+			<!-- <div> -->
+				<div style="display: flex;	display: -webkit-flex;">
+					<div style="width: 850px; min-width: 700px; margin-right: 2px; vertical-align: top;">
+						<div class="panel panel-primary">
+							<div class="panel-heading">
+								<h3 class="panel-title">RoboChat</h3>
+							</div>
+							<div id="chat-history" class="panel-body" style="height: 600px; overflow: auto; word-wrap:break-word; ">
+								<div class="bubble me">Test text</div>
+								<div class="bubble others">test</div>								
+							</div>
+						</div>
+					</div>
+					
+					<!-- buddy list container -->
+					<div style="vertical-align: top; width:150px; min-width:100px;">
+						<div class="panel panel-primary">
+							<div class="panel-heading">
+								<h3 class="panel-title">RoboList</h3>
+							</div>
+							<div class="panel-body" style="height:600px; overflow:auto">
+								<div>K-Bot</div>
+								<div>Hung-Bot</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<input id="chat-entry" type="text" class="form-control chat-entry" placeholder="Text input" style="width:1000px;">
+			<!-- </div> -->
+		</div>
+    </body>
+</html>
