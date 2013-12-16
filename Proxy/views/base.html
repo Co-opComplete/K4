@@ -3,9 +3,10 @@
         <title>Test Remote Site</title>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" type="text/javascript"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js" type="text/javascript"></script>
-        <script src="socket.io.js" type="text/javascript"></script>
-        <script src="test-site.js" type="text/javascript"></script>
-        <link rel="stylesheet" type="text/css" href="test-site.css" />
+        <script src="/static/socket.io.js" type="text/javascript"></script>
+        <script type="text/javascript">var port = {{port}};</script>
+        <script src="/static/site.js" type="text/javascript"></script>
+        <link rel="stylesheet" type="text/css" href="/static/site.css" />
     </head>
     <body>
         <button id="connect-button">Connect</button>

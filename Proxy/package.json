@@ -6,7 +6,9 @@
     "dependencies": {
         "socket.io": "0.9.x",
         "nconf": "0.6.x",
-        "sugar": "1.4.x"
+        "sugar": "1.4.x",
+        "express": "3.4.x",
+        "swig": "1.2.x"
     },
     "devDependencies": {},
     "keywords": [
