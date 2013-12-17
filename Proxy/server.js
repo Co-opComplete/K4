@@ -79,4 +79,4 @@ swig.setDefaults({cache: false});
 /*******************************
 ------ Express routes ----------
 ********************************/
-app.require('./lib/routes.js')(app);
+require('./lib/routes.js')(app);
