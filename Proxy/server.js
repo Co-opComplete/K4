@@ -9,10 +9,13 @@ var express = require('express'),
     sub = redis.createClient(),
     client = redis.createClient(),
     sugar = require('sugar'),
-    swig = require('swig'),
-    port = 3000;
+    swig = require('swig');
 
-server.listen(port);
+app.configure(function(){
+    app.set('port', 8000);
+});
+
+server.listen(app.get('port'));
 
 var clients = [];
 
@@ -76,6 +79,4 @@ swig.setDefaults({cache: false});
 /*******************************
 ------ Express routes ----------
 ********************************/
-app.get('/', function(req, res){
-    res.render('base', {port: port});
-});
+app.require('./lib/routes.js')(app);
