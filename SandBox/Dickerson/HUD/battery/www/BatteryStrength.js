@@ -108,7 +108,8 @@ $(function()
 	
 	Connect();
 	
-	setInterval(function() {
+	setInterval(function() 
+	{
 		if (!socket.socket.connected) { Connect(); }
 	}, 1000);
 });
