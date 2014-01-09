@@ -172,7 +172,7 @@ var rightPressed;
 function Connect() {
 	if (!socket)
 	{
-		socket = io.connect('http://k4-dev.cmgeneral.local:'+port+'/remote');
+		socket = io.connect('http://localhost:'+port+'/remote');
 
 		socket.on('event', function(data){
 			console.log(data);
