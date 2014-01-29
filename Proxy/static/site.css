@@ -1,24 +1,31 @@
 #nav-buttons {
-    width: 125px;
-    margin: 30px 0 0 30px;
+	margin-top: 40px;
+	width: 156px;
+	height: 144px;
+    position: relative;
 }
 
 #nav-buttons button {
+	position: absolute;
 }
 
-#up-button, #down-button {
-    margin: 0 auto;
-    display: block;
+#up-button {
+	top: 0;
+	left: 38%;
+}
+#down-button {
+	bottom: 0;
+	left: 38%;
 }
 
 #left-button {
-    display: inline-block;
-    margin: 10px 35px 10px 0;
+	top: 36%;
+	left: 0%;
 }
 
 #right-button {
-    display: inline-block;
-    margin: 10px 0 10px 0;
+	top: 36%;
+	right: 0%;
 }
 
 #log {
