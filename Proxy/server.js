@@ -33,6 +33,17 @@ nconf.load();
 io.of('/remote').on('connection', function(socket){
     clients.push(socket);
 
+    var cmd = 'start';
+    setInterval(function() {
+        socket.emit('cmd', {cmd: cmd});
+        if (cmd === 'start') {
+            cmd = 'stop';
+        } else {
+            cmd = 'start';
+        }
+
+    }, 5000);
+
     socket.on('response', function(data){
         console.log(data);
     });
