@@ -1,7 +1,8 @@
 var express = require('express'),
     app = express(),
     server = require('http').createServer(app),
-    io = require('socket.io').listen(server),
+    //io = require('socket.io').listen(server),
+    engine = require('engine.io'),
     nconf = require('nconf'),
     RedisStore = require('socket.io/lib/stores/redis'),
     redis = require('socket.io/node_modules/redis'),
@@ -9,7 +10,8 @@ var express = require('express'),
     sub = redis.createClient(),
     client = redis.createClient(),
     sugar = require('sugar'),
-    swig = require('swig');
+    swig = require('swig'),
+    sockets;
 
 app.configure(function(){
     app.set('port', 8000);
@@ -17,8 +19,21 @@ app.configure(function(){
 
 server.listen(app.get('port'));
 
+sockets = engine.attach(server);
+
+sockets.on('connection', function(socket) {
+    console.log('got connection');
+
+    socket.on('message', function (data) {
+        console.log('got message: ', data);
+
+        socket.send('OMGZ it worked!!');
+    });
+});
+
 var clients = [];
 
+/*
 // Setup redis store for socket.io
 io.set('store', new RedisStore({
     redisPub: pub,
@@ -30,8 +45,13 @@ io.set('store', new RedisStore({
 nconf.file({file: 'conf/config.json'});
 nconf.load();
 
+io.of('/robot').on('connection', function(socket){
+});
+
 io.of('/remote').on('connection', function(socket){
     clients.push(socket);
+
+    console.log('Got connection');
 
     var cmd = 'start';
     setInterval(function() {
@@ -74,6 +94,7 @@ io.of('/remote').on('connection', function(socket){
         console.log('Right - ' + data.action);
     });
 });
+*/
 
 /*******************************
 ------ Setup for Express -------

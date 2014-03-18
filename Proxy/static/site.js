@@ -172,7 +172,7 @@ var rightPressed;
 function Connect() {
 	if (!socket)
 	{
-		socket = io.connect('http://localhost:'+port+'/remote');
+		socket = io.connect('http://192.168.114.99:'+port+'/remote');
 
 		socket.on('event', function(data){
 			console.log(data);
