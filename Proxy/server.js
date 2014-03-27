@@ -1,14 +1,14 @@
 var express = require('express'),
     app = express(),
-    server = require('http').createServer(app),
-    //io = require('socket.io').listen(server),
-    engine = require('engine.io'),
+    server = require('http').Server(app),
+    io = require('socket.io')(server),
+    //engine = require('engine.io'),
     nconf = require('nconf'),
-    RedisStore = require('socket.io/lib/stores/redis'),
-    redis = require('socket.io/node_modules/redis'),
-    pub = redis.createClient(),
-    sub = redis.createClient(),
-    client = redis.createClient(),
+    //RedisStore = require('socket.io/lib/stores/redis'),
+    //redis = require('socket.io/node_modules/redis'),
+    //pub = redis.createClient(),
+    //sub = redis.createClient(),
+    //client = redis.createClient(),
     sugar = require('sugar'),
     swig = require('swig'),
     sockets;
@@ -19,6 +19,7 @@ app.configure(function(){
 
 server.listen(app.get('port'));
 
+/*
 sockets = engine.attach(server);
 
 sockets.on('connection', function(socket) {
@@ -30,6 +31,7 @@ sockets.on('connection', function(socket) {
         socket.send('OMGZ it worked!!');
     });
 });
+*/
 
 var clients = [];
 
@@ -40,29 +42,26 @@ io.set('store', new RedisStore({
     redisSub: sub,
     redisClient: client
 }));
+*/
 
 // Setup config
 nconf.file({file: 'conf/config.json'});
 nconf.load();
 
-io.of('/robot').on('connection', function(socket){
+io.of('/robot').on('connection', function (socket) {
+    console.log('got robot connnection');
+
+    socket.on('message', function (data) {
+        console.log('got message: ', data);
+
+        socket.send('OMGZ it worked!!!');
+    });
 });
 
 io.of('/remote').on('connection', function(socket){
     clients.push(socket);
 
     console.log('Got connection');
-
-    var cmd = 'start';
-    setInterval(function() {
-        socket.emit('cmd', {cmd: cmd});
-        if (cmd === 'start') {
-            cmd = 'stop';
-        } else {
-            cmd = 'start';
-        }
-
-    }, 5000);
 
     socket.on('response', function(data){
         console.log(data);
@@ -94,7 +93,6 @@ io.of('/remote').on('connection', function(socket){
         console.log('Right - ' + data.action);
     });
 });
-*/
 
 /*******************************
 ------ Setup for Express -------

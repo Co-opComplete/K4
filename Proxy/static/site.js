@@ -1,8 +1,9 @@
-var socket;
-var upPressed;
-var downPressed;
-var leftPressed;
-var rightPressed;
+var socket,
+    upPressed,
+    downPressed,
+    leftPressed,
+    rightPressed,
+    websocketHost = '10.128.243.152';
 
 (function($, undef){
     $(function(){
@@ -172,7 +173,7 @@ var rightPressed;
 function Connect() {
 	if (!socket)
 	{
-		socket = io.connect('http://192.168.114.99:'+port+'/remote');
+		socket = io.connect('http://'+websocketHost+':'+port+'/remote');
 
 		socket.on('event', function(data){
 			console.log(data);
