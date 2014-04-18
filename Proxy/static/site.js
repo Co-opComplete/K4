@@ -1,9 +1,9 @@
-var socket,
-    upPressed,
+var upPressed,
     downPressed,
     leftPressed,
     rightPressed,
-    websocketHost = '10.128.243.152';
+    websocketHost = '192.168.114.148';
+    //websocketHost = '10.128.243.206';
 
 (function($, undef){
     $(function(){
@@ -21,48 +21,48 @@ var socket,
 
         // Disconnect Button
         $('#disconnect-button').click(function(){
-            socket.socket.disconnect();
+            window.socket.socket.disconnect();
             LogMessage('Disconnecting');
         });
 
         // Directional Buttons
         // Up
         $('#up-button').mousedown(function(){
-            socket.emit('up', {action: 'pressed'});
+            window.socket.emit('up', {action: 'pressed'});
             // Log the event
             LogMessage('Up Pressed');
         }).mouseup(function(){
-            socket.emit('up', {action: 'released'});
+            window.socket.emit('up', {action: 'released'});
             // Log the event
             LogMessage('Up Released');
         });
         // Down
         $('#down-button').mousedown(function(){
-            socket.emit('down', {action: 'pressed'});
+            window.socket.emit('down', {action: 'pressed'});
             // Log the event
             LogMessage('Down Pressed');
         }).mouseup(function(){
-            socket.emit('down', {action: 'released'});
+            window.socket.emit('down', {action: 'released'});
             // Log the event
             LogMessage('Down Released');
         });
         // Left
         $('#left-button').mousedown(function(){
-            socket.emit('left', {action: 'pressed'});
+            window.socket.emit('left', {action: 'pressed'});
             // Log the event
             LogMessage('Left Pressed');
         }).mouseup(function(){
-            socket.emit('left', {action: 'released'});
+            window.socket.emit('left', {action: 'released'});
             // Log the event
             LogMessage('Left Released');
         });
         // Right
         $('#right-button').mousedown(function(){
-            socket.emit('right', {action: 'pressed'});
+            window.socket.emit('right', {action: 'pressed'});
             // Log the event
             LogMessage('Right Pressed');
         }).mouseup(function(){
-            socket.emit('right', {action: 'released'});
+            window.socket.emit('right', {action: 'released'});
             // Log the event
             LogMessage('Right Released');
         });
@@ -76,7 +76,7 @@ var socket,
                 case 87:
 					if(!upPressed)
 					{
-						socket.emit('up', {action: 'pressed'});
+						window.socket.emit('up', {action: 'pressed'});
 						upPressed = true;
                         // Log the event
                         LogMessage('Up Pressed');
@@ -87,7 +87,7 @@ var socket,
                 case 83:
 					if(!downPressed)
 					{
-						socket.emit('down', {action: 'pressed'});
+						window.socket.emit('down', {action: 'pressed'});
 						downPressed = true;
                         // Log the event
                         LogMessage('Down Pressed');
@@ -98,7 +98,7 @@ var socket,
                 case 65:
 					if(!leftPressed)
 					{
-						socket.emit('left', {action: 'pressed'});
+						window.socket.emit('left', {action: 'pressed'});
 						leftPressed = true;
                         // Log the event
                         LogMessage('Left Pressed');
@@ -109,7 +109,7 @@ var socket,
                 case 68:
 					if(!rightPressed)
 					{
-						socket.emit('right', {action: 'pressed'});
+						window.socket.emit('right', {action: 'pressed'});
 						rightPressed = true;
                         // Log the event
                         LogMessage('Right Pressed');
@@ -123,7 +123,7 @@ var socket,
                 // Up
                 case 38:
                 case 87:
-                    socket.emit('up', {action: 'released'});
+                    window.socket.emit('up', {action: 'released'});
 					upPressed = false;
                     // Log the event
                     LogMessage('Up Released');
@@ -131,7 +131,7 @@ var socket,
                 // Down
                 case 40:
                 case 83:
-                    socket.emit('down', {action: 'released'});
+                    window.socket.emit('down', {action: 'released'});
 					downPressed = false;
                     // Log the event
                     LogMessage('Down Released');
@@ -139,7 +139,7 @@ var socket,
                 // Left
                 case 37:
                 case 65:
-                    socket.emit('left', {action: 'released'});
+                    window.socket.emit('left', {action: 'released'});
 					leftPressed = false;
                     // Log the event
                     LogMessage('Left Released');
@@ -147,7 +147,7 @@ var socket,
                 // Right
                 case 39:
                 case 68:
-                    socket.emit('right', {action: 'released'});
+                    window.socket.emit('right', {action: 'released'});
 					rightPressed = false;
                     // Log the event
                     LogMessage('Right Released');
@@ -171,16 +171,16 @@ var socket,
 })(jQuery);
 
 function Connect() {
-	if (!socket)
+	if (!window.socket)
 	{
-		socket = io.connect('http://'+websocketHost+':'+port+'/remote');
+		window.socket = io.connect('http://'+websocketHost+':'+port+'/remote');
 
-		socket.on('event', function(data){
+		window.socket.on('event', function(data){
 			console.log(data);
-			socket.emit('response', {response: 'response'});
+			window.socket.emit('response', {response: 'response'});
 		});
 		
-		socket.on('connect', function() {
+		window.socket.on('connect', function() {
 			console.log('Connected');
 			$('#connect-button').prop('disabled', true);
 			$('#disconnect-button').prop('disabled', false);
@@ -190,7 +190,7 @@ function Connect() {
 			$('#right-button').prop('disabled', false);
 		});
 	
-		socket.on('disconnect', function() {
+		window.socket.on('disconnect', function() {
 			console.log('Disconnected');
 			$('#connect-button').prop('disabled', false);
 			$('#disconnect-button').prop('disabled', true);
@@ -201,6 +201,6 @@ function Connect() {
 		});
 	}
 	else
-	{ socket.socket.reconnect(); }
+	{ window.socket.socket.reconnect(); }
 		
 }
