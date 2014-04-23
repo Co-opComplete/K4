@@ -4,12 +4,9 @@
     "description": "Middleware service for proxying commands to and from K4",
     "main": "./server.js",
     "dependencies": {
-        "socket.io": "1.0.0-pre",
+        "socket.io": "0.9.x",
         "nconf": "0.6.x",
-        "lodash": "2.4.x",
-        "express": "3.4.x",
-        "swig": "1.2.x",
-        "engine.io": "1.0.x"
+        "sugar": "1.4.x"
     },
     "devDependencies": {},
     "keywords": [

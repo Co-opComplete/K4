@@ -1,0 +1,151 @@
+#name {
+	margin: 10px 30px 10px 10px;
+}
+#name-entry {
+	padding-left: 5px;
+	width: 195px;
+}
+
+#nav-buttons {
+    width: 250px;
+    /* margin: 10px 30px 10px 30px; */
+}
+
+#nav-buttons button {
+}
+
+#up-button, #down-button {
+    margin: 0 auto;
+    display: block;
+}
+
+#left-button {
+    display: inline-block;
+    margin: 10px 35px 10px 0px;
+}
+
+#right-button {
+    display: inline-block;
+    /* margin: 10px 0px 10px 0px; */
+}
+
+.center {
+/* Internet Explorer 10 */
+	display:-ms-flexbox;
+	-ms-flex-pack:center;
+	-ms-flex-align:center;
+
+	/* Firefox */
+	display:-moz-box;
+	-moz-box-pack:center;
+	-moz-box-align:center;
+
+	/* Safari, Opera, and Chrome */
+	display:-webkit-box;
+	-webkit-box-pack:center;
+	-webkit-box-align:center;
+
+	/* W3C */
+	display:box;
+	box-pack:center;
+	box-align:center;
+}
+
+.fade {
+	-webkit-transition: opacity 1s ease-in-out;
+	-moz-transition: opacity 1s ease-in-out;
+	-o-transition: opacity 1s ease-in-out;
+	-ms-transition: opacity 1s ease-in-out;
+	transition: opacity 1s ease-in-out;
+}
+
+#connection-buttons {
+	margin: 10px 30px 10px 10px;
+}
+
+#connection-buttons button {
+	width: 100px;
+}
+
+.chat-container {
+	margin: 20px;
+	width: 1000px;
+	height: 600px;
+	
+
+	/* Remove this before commit */
+	/* border-style:solid;	border-width: 1px; */
+}
+
+.chat-history-container {
+    width: 800px;
+	margin-right: 2px;
+	float: left;
+	vertical-align: top;
+	height: 100%;
+}
+
+.chat-history {
+	height: 100%;
+	overflow: auto
+}
+
+.buddy-list-container {
+	vertical-align: top;
+	height: 100%;
+}
+
+.buddy-list {
+	height: 100%;
+	overflow: auto;
+}
+
+.bubble{
+    background-color: #F2F2F2;
+    border-radius: 5px;
+    box-shadow: 0 0 6px #B2B2B2;
+    display: inline-block;
+    padding: 10px 18px;
+    position: relative;
+    vertical-align: top;
+	clear: both;
+}
+
+.bubble::before {
+    background-color: #F2F2F2;
+    content: "\00a0";
+    display: block;
+    height: 16px;
+    position: absolute;
+    top: 11px;
+    transform:             rotate( 29deg ) skew( -35deg );
+        -moz-transform:    rotate( 29deg ) skew( -35deg );
+        -ms-transform:     rotate( 29deg ) skew( -35deg );
+        -o-transform:      rotate( 29deg ) skew( -35deg );
+        -webkit-transform: rotate( 29deg ) skew( -35deg );
+    width:  20px;
+}
+
+.me {
+    float: left;   
+    margin: 5px 45px 5px 20px;         
+}
+
+.me::before {
+    box-shadow: -2px 2px 2px 0 rgba( 178, 178, 178, .4 );
+    left: -9px;           
+}
+
+.others {
+    float: right;    
+    margin: 5px 20px 5px 45px;         
+}
+
+.others::before {
+    box-shadow: 2px -2px 2px 0 rgba( 178, 178, 178, .4 );
+    right: -9px;    
+}
+
+.chat-entry {
+	/* margin: 2px 0px 2px 0px; */
+}
