@@ -1,0 +1,38 @@
+#nav-buttons {
+	margin-top: 40px;
+	width: 156px;
+	height: 144px;
+    position: relative;
+}
+
+#nav-buttons button {
+	position: absolute;
+}
+
+#up-button {
+	top: 0;
+	left: 38%;
+}
+#down-button {
+	bottom: 0;
+	left: 38%;
+}
+
+#left-button {
+	top: 36%;
+	left: 0%;
+}
+
+#right-button {
+	top: 36%;
+	right: 0%;
+}
+
+#log {
+    margin-top: 30px;
+}
+
+#log > span {
+    display: block;
+    margin: 3px;
+}
