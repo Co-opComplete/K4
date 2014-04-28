@@ -130,7 +130,7 @@ io.of('/remote').on('connection', function(socket){
 ------ Setup for Express -------
 ********************************/
 app.use(express.bodyParser());
-app.use('/static', express.static('static'));
+app.use('/assets', express.static('assets'));
 // Swig Templating Engine
 app.engine('html', swig.renderFile);
 app.set('view engine', 'html');
