@@ -8,4 +8,9 @@ module.exports = function(app){
     app.get('/login', function(req, res) {
         res.render('login', {});
     });
+
+    // 403
+    app.get('/403', function(req, res) {
+        res.render('403', {});
+    });
 };
