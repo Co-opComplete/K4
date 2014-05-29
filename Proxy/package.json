@@ -4,12 +4,16 @@
     "description": "Middleware service for proxying commands to and from K4",
     "main": "./server.js",
     "dependencies": {
-        "socket.io": "1.0.0-pre",
-        "nconf": "0.6.x",
-        "lodash": "2.4.x",
+        "engine.io": "1.0.x",
         "express": "3.4.x",
-        "swig": "1.2.x",
-        "engine.io": "1.0.x"
+        "lodash": "2.4.x",
+        "mongodb": "^1.4.5",
+        "mongoose": "^3.8.11",
+        "nconf": "0.6.x",
+        "passport": "^0.2.0",
+        "passport-local": "^1.0.0",
+        "socket.io": "1.0.0-pre",
+        "swig": "1.2.x"
     },
     "devDependencies": {},
     "keywords": [
@@ -18,8 +22,10 @@
         "telepresence",
         "K4"
     ],
-    "contributors": [{
-        "name": "Corey Pauley",
-        "email": "corey.pauley@dealertrack.com"
-    }]
+    "contributors": [
+        {
+            "name": "Corey Pauley",
+            "email": "corey.pauley@dealertrack.com"
+        }
+  ]
 }

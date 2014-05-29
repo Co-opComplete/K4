@@ -11,6 +11,8 @@ var express = require('express'),
     //client = redis.createClient(),
     sugar = require('sugar'),
     swig = require('swig'),
+    passport = require('passport'),
+    LocalStrategy = require('passport-local').Strategy,
     sockets;
 
 app.configure(function(){
@@ -142,3 +144,21 @@ swig.setDefaults({cache: false});
 ------ Express routes ----------
 ********************************/
 require('./lib/routes.js')(app);
+
+/*******************************
+------ Setup for Passport -------
+********************************/
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.serializeUser( function(user,done) {
+    done(null, user);
+});
+passport.deserializeUser( function(user,done) {
+    done(null, user);
+});
+passport.use(new LocalStrategy( function(username, password, done) {
+    process.nextTick( function() {
+        // Auth check logic
+    });
+}));

@@ -8,6 +8,18 @@ module.exports = function(app){
     app.get('/login', function(req, res) {
         res.render('login', {});
     });
+    app.post('/login',
+        passport.authenticate('local', {
+            successRedirect: '/loginSuccess',
+            failureRedirect: '/loginFailure'
+        })
+    );
+    app.get('/loginFailure', function(req, res, next) {
+        res.send('Failure to authenticate');
+    });
+    app.get('/loginSuccess', function(req, res, next) {
+        res.send('Successfully authenticated');
+    });
 
     // 403
     app.get('/403', function(req, res) {
