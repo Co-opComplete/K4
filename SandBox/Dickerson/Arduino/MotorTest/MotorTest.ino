@@ -81,8 +81,8 @@ void SetupI2c()
 void StopMotors()
 {
     m1->WriteDamping(50);
-    m1->WriteDamping(50);
-    m2->WriteSpeed(0);
+	m1->WriteSpeed(0);
+    m2->WriteDamping(50);
     m2->WriteSpeed(0);
     m3->WriteDamping(50);
     m3->WriteSpeed(0);
