@@ -1,3 +1,5 @@
+var passport = require('passport');
+
 module.exports = function(app){
     // Home Url
     app.get('/', function(req, res){
