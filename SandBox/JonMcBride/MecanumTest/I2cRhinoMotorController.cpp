@@ -4,7 +4,7 @@
 
 #include <Arduino.h>
 #include <Wire.h>
-#include "IRhinoMotorController.h"
+#include "IMotorController.h"
 #include "I2cRhinoMotorController.h"
 
 #define I2C_MAX_SPEED                 0
@@ -20,38 +20,50 @@
 I2cController::I2cController()
 { }
 
+int ConvertValue(float value)
+{
+  value = min(-1.0f, max(value, 1.0f)); // Force value within acceptable range [-1.0f, 1.0f]
+  return value * 255;
+}
+
+float ConvertValue(int value)
+{
+  return value / 255;
+}
+
+
 void I2cController::Attach(int address)
 {  
   i2cAddress = address >> 1; // this is bit shifted right by 1 for obvious, unknown reasons.
   Wire.begin();
 }
 
-void I2cController::WriteMaxSpeed(int value)
+void I2cController::WriteMaxSpeed(float value)
 {
     Wire.beginTransmission(i2cAddress);
     Wire.write(I2C_MAX_SPEED);
-    Wire.write(value >> 0); // LSB
-    Wire.write(value >> 8); // MSB
+    Wire.write(ConvertValue(value) >> 0); // LSB
+    Wire.write(ConvertValue(value) >> 8); // MSB
     Wire.endTransmission();
     delay(10); // maybe this is needed
 }
 
-void I2cController::WriteSpeed(int value)
+void I2cController::WriteSpeed(float value)
 {
     Wire.beginTransmission(i2cAddress);
     Wire.write(I2C_SPEED);
-    Wire.write(value >> 0); // LSB
-    Wire.write(value >> 8); // MSB
+    Wire.write(ConvertValue(value) >> 0); // LSB
+    Wire.write(ConvertValue(value) >> 8); // MSB
     Wire.endTransmission();
     delay(10); // maybe this is needed
 }
    
-void I2cController::WriteDamping(int value)
+void I2cController::WriteDamping(float value)
 {
     Wire.beginTransmission(i2cAddress);
     Wire.write(I2C_DAMPING);
-    Wire.write(value >> 0);   // LSB
-    Wire.write(value >> 8);    // MSB
+    Wire.write(ConvertValue(value) >> 0);   // LSB
+    Wire.write(ConvertValue(value) >> 8);    // MSB
     Wire.endTransmission();
     delay(10); // maybe this is needed
 }
@@ -68,7 +80,7 @@ void I2cController::WriteRelativePosition(long value)
     delay(10); // maybe this is needed
   }
   
-int I2cController::ReadSpeed()
+float I2cController::ReadSpeed()
 {
 
   int value = 0;
@@ -81,10 +93,10 @@ int I2cController::ReadSpeed()
   while(Wire.available())
   { value = Wire.read(); }
   
-  return value;
+  return ConvertValue(value);
 }
 
-int I2cController::ReadMaxSpeed()
+float I2cController::ReadMaxSpeed()
 {
 
   int value = 0;
@@ -97,10 +109,10 @@ int I2cController::ReadMaxSpeed()
   while(Wire.available())
   { value = Wire.read(); }
   
-  return value;
+  return ConvertValue(value);
 }
 
-int I2cController::ReadDamping()
+float I2cController::ReadDamping()
 {
 
   int value = 0;
@@ -113,7 +125,7 @@ int I2cController::ReadDamping()
   while(Wire.available())
   { value = Wire.read(); }
   
-  return value;
+  return ConvertValue(value);
 }
 
 long I2cController::ReadPosition()

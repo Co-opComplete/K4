@@ -2,9 +2,9 @@
 #include <math.h>
 #include "Mecanum.h"
 #include "MotionStatus.h"
-#include "IRhinoMotorController.h"
+#include "IMotorController.h"
 
-void Mecanum::Attach(IRhinoMotorController _MA, IRhinoMotorController _MB, IRhinoMotorController _MC, IRhinoMotorController _MD)
+void Mecanum::Attach(IMotorController *_MA, IMotorController *_MB, IMotorController *_MC, IMotorController *_MD)
 {
   MA = _MA;
   MB = _MB;
@@ -12,7 +12,7 @@ void Mecanum::Attach(IRhinoMotorController _MA, IRhinoMotorController _MB, IRhin
   MD = _MD;
 }
 
-bool Mecanum::Move(Vector translation, Vector rotation)
+bool Mecanum::Move(Vector translation, float rotation)
 {
   /*
     a - front left
@@ -21,15 +21,15 @@ bool Mecanum::Move(Vector translation, Vector rotation)
     d - back left
   */
 
-  float a = translation.magnitude * sin(translation.angle + PI/4) + rotation.magnitude;
-  float b = translation.magnitude * cos(translation.angle + PI/4) - rotation.magnitude;
-  float c = translation.magnitude * sin(translation.angle + PI/4) - rotation.magnitude;
-  float d = translation.magnitude * cos(translation.angle + PI/4) + rotation.magnitude;
+  float a = translation.magnitude * sin(translation.angle + PI/4) + rotation;
+  float b = translation.magnitude * cos(translation.angle + PI/4) - rotation;
+  float c = translation.magnitude * sin(translation.angle + PI/4) - rotation;
+  float d = translation.magnitude * cos(translation.angle + PI/4) + rotation;
   
   float scalar = max(
                       max(abs(a), abs(b)),
                       max(abs(c), abs(d))
-                    );
+                    ); 
   
   if (scalar > 1.0f)
   {
@@ -39,10 +39,12 @@ bool Mecanum::Move(Vector translation, Vector rotation)
     d = min(d / scalar, 1.0f);
   }
   
-  MA.WriteSpeed(a);
-  MB.WriteSpeed(b);
-  MC.WriteSpeed(c);
-  MD.WriteSpeed(d);
+  MA->WriteSpeed(a);
+  MB->WriteSpeed(b);
+  MC->WriteSpeed(c);
+  MD->WriteSpeed(d);
+  
+  return true;
 }
 
 bool Mecanum::IsClear(Vector vector)

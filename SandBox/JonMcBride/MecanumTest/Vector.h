@@ -13,7 +13,8 @@ class Vector
     float angle;
     float magnitude;
     
-    Vector(float angle, float magnitude)  ;
+    Vector();
+    Vector(float angle, float magnitude);
 };
 
 #endif

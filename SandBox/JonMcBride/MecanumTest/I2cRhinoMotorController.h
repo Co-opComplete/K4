@@ -6,26 +6,37 @@
 #define __I2cController_H__
 
 #include <Arduino.h>
-#include "IRhinoMotorController.h"
+#include "IMotorController.h"
 
-class I2cController : public IRhinoMotorController
+class I2cController : public IMotorController
 {
   private:
     int i2cAddress;
+    
+    int ConvertValue(float value)
+    {
+      value = min(-1.0f, max(value, 1.0f)); // Force value within acceptable range [-1.0f, 1.0f]
+      return value * 255;
+    }
+    
+    float ConvertValue(int value)
+    {
+      return value / 255;
+    }
     
   public:
     I2cController();
     
     void Attach(int address);
     
-    virtual void WriteMaxSpeed(int value);
-    virtual void WriteSpeed(int value);
-    virtual void WriteDamping(int value);
+    virtual void WriteMaxSpeed(float value);
+    virtual void WriteSpeed(float value);
+    virtual void WriteDamping(float value);
     virtual void WriteRelativePosition(long value);
     
-    virtual int ReadSpeed();
-    virtual int ReadMaxSpeed();
-    virtual int ReadDamping();
+    virtual float ReadSpeed();
+    virtual float ReadMaxSpeed();
+    virtual float ReadDamping();
     virtual long ReadPosition();
 };
 

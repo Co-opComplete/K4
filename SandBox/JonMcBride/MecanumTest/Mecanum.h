@@ -8,21 +8,21 @@
 #include <Arduino.h>
 #include "IMotionController.h"
 #include "MotionStatus.h"
-#include "IRhinoMotorController.h"
+#include "IMotorController.h"
 
-class Mecanum : IMotionController
+class Mecanum : public IMotionController
 {
+  private:
+    IMotorController *MA;
+    IMotorController *MB;
+    IMotorController *MC;
+    IMotorController *MD;
+    
   public:
-    virtual void Attach(IRhinoMotorController MA, IRhinoMotorController MB, IRhinoMotorController MC, IRhinoMotorController MD);
-    virtual bool Move(Vector translation, Vector rotation);
+    virtual void Attach(IMotorController *MA, IMotorController *MB, IMotorController *MC, IMotorController *MD);
+    virtual bool Move(Vector translation, float rotation);
     virtual bool IsClear(Vector vector);
     //virtual MotionStatus GetStatus();
-    
-  private:
-    IRhinoMotorController MA;
-    IRhinoMotorController MB;
-    IRhinoMotorController MC;
-    IRhinoMotorController MD;
 };
 
 #endif

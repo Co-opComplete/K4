@@ -8,14 +8,25 @@
 #include <Arduino.h>
 //#include <HardwareSerial.h>
 #include <SoftwareSerial.h>
-#include "IRhinoMotorController.h"
+#include "IMotorController.h"
 #include "I2cRhinoMotorController.h"
 
-class SerialController : public IRhinoMotorController
+class SerialController : public IMotorController
 {
   private:
     //HardwareSerial& _port = Serial;
     SoftwareSerial *_port;
+    
+    int ConvertValue(float value)
+    {
+      value = min(-1.0f, max(value, 1.0f)); // Force value within acceptable range [-1.0f, 1.0f]
+      return value * 255;
+    }
+    
+    float ConvertValue(int value)
+    {
+      return value / 255;
+    }
     
   public:
     SerialController();
@@ -23,14 +34,14 @@ class SerialController : public IRhinoMotorController
     //void Attach(HardwareSerial& port, int baud);
     void Attach(int rxPin, int txPin, int baud);
     
-    virtual void WriteMaxSpeed(int value);
-    virtual void WriteSpeed(int value);
-    virtual void WriteDamping(int value);
+    virtual void WriteMaxSpeed(float value);
+    virtual void WriteSpeed(float value);
+    virtual void WriteDamping(float value);
     virtual void WriteRelativePosition(long value);
     
-    virtual int ReadSpeed();
-    virtual int ReadMaxSpeed();
-    virtual int ReadDamping();
+    virtual float ReadSpeed();
+    virtual float ReadMaxSpeed();
+    virtual float ReadDamping();
     virtual long ReadPosition();
     
     bool RestoreDefaults();

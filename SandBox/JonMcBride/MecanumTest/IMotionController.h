@@ -12,8 +12,8 @@
 class IMotionController
 {
   public:
-    virtual bool Move(Vector translation, Vector rotation);
-    virtual bool IsClear(Vector vector);
+    virtual bool Move(Vector translation, float rotation) = 0;
+    virtual bool IsClear(Vector vector) = 0;
 //    virtual MotionStatus GetStatus();
 };
 
