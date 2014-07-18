@@ -13,6 +13,7 @@ var express = require('express'),
     swig = require('swig'),
     passport = require('passport'),
     LocalStrategy = require('passport-local').Strategy,
+    GitHubStrategy = require('passport-github').Strategy,
     sockets;
 
 app.configure(function(){
@@ -141,24 +142,36 @@ app.set('view cache', false);
 swig.setDefaults({cache: false});
 
 /*******************************
------- Express routes ----------
-********************************/
-require('./lib/routes.js')(app);
-
-/*******************************
 ------ Setup for Passport -------
 ********************************/
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(app.router);
+
+/*******************************
+------ Express routes ----------
+********************************/
+require('./lib/routes.js')(app);
+
 
 passport.serializeUser( function(user,done) {
     done(null, user);
 });
-passport.deserializeUser( function(user,done) {
-    done(null, user);
+passport.deserializeUser( function(obj,done) {
+    done(null, obj);
 });
 passport.use(new LocalStrategy( function(username, password, done) {
     process.nextTick( function() {
         // Auth check logic
+    });
+}));
+
+passport.use(new GitHubStrategy({
+    clientID: '124f0309abe008b9a88e',
+    clientSecret: 'e680ffa1851db07a4dbdc947e61b535ee70ed665',
+    callbackURL: 'http://localhost:8000/auth/github/callback'
+}, function(accessToken, refreshToken, profile, done) {
+    process.nextTick(function() {
+        return done(null, profile);
     });
 }));
