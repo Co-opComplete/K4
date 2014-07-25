@@ -169,7 +169,7 @@ passport.use(new LocalStrategy( function(username, password, done) {
 passport.use(new GitHubStrategy({
     clientID: '124f0309abe008b9a88e',
     clientSecret: 'e680ffa1851db07a4dbdc947e61b535ee70ed665',
-    callbackURL: 'http://localhost:8000/auth/github/callback'
+    callbackURL: 'http://k4-dev.cmgeneral.local:8000'
 }, function(accessToken, refreshToken, profile, done) {
     process.nextTick(function() {
         return done(null, profile);

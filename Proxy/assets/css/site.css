@@ -1,31 +1,43 @@
+.login .fa-github {
+    display: block;
+    margin: 10px auto 0; 
+    width: 200px;
+    text-decoration: none;
+}
+
+.login .fa-github span {
+    font-size: 20px;
+    vertical-align: middle;
+}
+
 #nav-buttons {
-	margin-top: 40px;
-	width: 156px;
-	height: 144px;
+    margin-top: 40px;
+    width: 156px;
+    height: 144px;
     position: relative;
 }
 
 #nav-buttons button {
-	position: absolute;
+    position: absolute;
 }
 
 #up-button {
-	top: 0;
-	left: 38%;
+    top: 0;
+    left: 38%;
 }
 #down-button {
-	bottom: 0;
-	left: 38%;
+    bottom: 0;
+    left: 38%;
 }
 
 #left-button {
-	top: 36%;
-	left: 0%;
+    top: 36%;
+    left: 0%;
 }
 
 #right-button {
-	top: 36%;
-	right: 0%;
+    top: 36%;
+    right: 0%;
 }
 
 #log {
