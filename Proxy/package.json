@@ -14,6 +14,7 @@
         "passport-local": "^1.0.0",
         "socket.io": "1.0.0-pre",
         "swig": "1.2.x",
+        "sugar": "1.4.x",
         "passport-github": "^0.1.5"
     },
     "devDependencies": {},
