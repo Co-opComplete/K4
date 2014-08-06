@@ -1,0 +1,27 @@
+{
+    "name": "pi-websocket-client",
+    "version": "0.1.0",
+    "description": "Middleware service for proxying commands to and from K4",
+    "main": "./server.js",
+    "dependencies": {
+        "nconf": "0.6.x",
+        "i2c": "0.1.4",
+        "lodash": "2.4.x",
+        "rasp2c": "0.0.3",
+        "websocket": "1.0.x",
+        "serialport": "1.3.x",
+        "socket.io-client": "1.0.0-pre",
+        "engine.io-client": "1.0.x"
+    },
+    "devDependencies": {},
+    "keywords": [
+        "websockets",
+        "robot",
+        "telepresence",
+        "K4"
+    ],
+    "contributors": [{
+        "name": "Corey Pauley",
+        "email": "corey.pauley@dealertrack.com"
+    }]
+}

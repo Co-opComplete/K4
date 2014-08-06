@@ -2,7 +2,7 @@ var upPressed,
     downPressed,
     leftPressed,
     rightPressed,
-    websocketHost = '192.168.114.148';
+    websocketHost = '192.168.114.170';
     //websocketHost = '10.128.243.206';
 
 (function($, undef){
