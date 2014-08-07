@@ -32,15 +32,8 @@ module.exports = function(app){
     app.get('/auth/github', passport.authenticate('github'));
 
     app.get('/auth/github/callback', passport.authenticate('github', {
-        successRedirect: '/success',
-        failureRedirect: '/error'
+        successRedirect: '/',
+        failureRedirect: '/login'
     }));
 
-    app.get('/success', function(req, res, next) {
-        res.send('Successfully logged in.');
-    });
-
-    app.get('/error', function(req, res, next) {
-        res.send('Error logging in.');
-    });
 };
