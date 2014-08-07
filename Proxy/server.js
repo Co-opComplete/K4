@@ -21,6 +21,7 @@ app.configure(function(){
 });
 
 server.listen(app.get('port'));
+console.log('Running on http://k4-dev.cmgeneral.local:' + app.get('port'));
 
 /*
 sockets = engine.attach(server);
