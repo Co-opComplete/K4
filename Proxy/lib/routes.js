@@ -2,8 +2,11 @@ var passport = require('passport');
 
 module.exports = function(app){
     // Home Url
-    app.get('/', function(req, res){
-        res.render('base', {port: app.get('port')});
+    // app.get('/', function(req, res){
+    //     res.render('base', {port: app.get('port')});
+    // });
+    app.get('/', ensureAuthenticated, function(req, res) {
+        res.render('base', { user: req.user});
     });
 
     // Login
@@ -32,17 +35,26 @@ module.exports = function(app){
         res.render('403', {});
     });
 
+    // Logout
+    app.get('/logout', function(req, res) {
+        req.logout();
+        res.redirect('/login');
+    });
+
     // Github OAuth
     app.get('/auth/github', passport.authenticate('github'), function(req, res) {});
 
     app.get('/auth/github/callback', passport.authenticate('github', { failureRedirect: '/login' }), function(req, res) {
-           res.redirect('/account');
+        res.redirect('/');
     });
 
 };
 
 // test authentication
 function ensureAuthenticated(req, res, next) {
-    if (req.isAuthenticated()) { return next(); }
-    res.redirect('/login');
+    if (req.isAuthenticated()) {
+        return next();
+    } else {
+        res.redirect('/login');
+    }
 }

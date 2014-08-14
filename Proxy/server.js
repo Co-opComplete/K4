@@ -12,7 +12,7 @@ var express = require('express'),
     sugar = require('sugar'),
     swig = require('swig'),
     passport = require('passport'),
-    LocalStrategy = require('passport-local').Strategy,
+    // LocalStrategy = require('passport-local').Strategy,
     GitHubStrategy = require('passport-github').Strategy,
     sockets;
 
@@ -20,8 +20,31 @@ app.configure(function(){
     app.set('port', 8000);
 });
 
-server.listen(app.get('port'));
-console.log('Running on http://k4-dev.cmgeneral.local:' + app.get('port'));
+passport.serializeUser( function(user,done) {
+    done(null, user);
+});
+passport.deserializeUser( function(obj,done) {
+    done(null, obj);
+});
+
+// passport.use(new LocalStrategy( function(username, password, done) {
+//     process.nextTick( function() {
+//         // Auth check logic
+//     });
+// }));
+
+passport.use(new GitHubStrategy({
+    // clientID: '124f0309abe008b9a88e',
+    // clientSecret: 'e680ffa1851db07a4dbdc947e61b535ee70ed665',
+    // callbackURL: 'http://k4-dev.cmgeneral.local:8000/auth/github/callback'
+    clientID: 'a82cde9a46d14ea1209f',
+    clientSecret: '39940c2a559af15dff833b523f554f9778090d1c',
+    callbackURL: 'http://localhost:8000/auth/github/callback'
+}, function(accessToken, refreshToken, profile, done) {
+    process.nextTick(function() {
+        return done(null, profile);
+    });
+}));
 
 /*
 sockets = engine.attach(server);
@@ -133,7 +156,6 @@ io.of('/remote').on('connection', function(socket){
 /*******************************
 ------ Setup for Express -------
 ********************************/
-app.use(express.bodyParser());
 app.use('/assets', express.static('assets'));
 // Swig Templating Engine
 app.engine('html', swig.renderFile);
@@ -141,6 +163,11 @@ app.set('view engine', 'html');
 app.set('views', __dirname + '/views');
 app.set('view cache', false);
 swig.setDefaults({cache: false});
+// app.use(express.logger());
+app.use(express.cookieParser());
+app.use(express.bodyParser());
+app.use(express.methodOverride());
+app.use(express.session({ secret: 'my_precious' }));
 
 /*******************************
 ------ Setup for Passport -------
@@ -154,25 +181,6 @@ app.use(app.router);
 ********************************/
 require('./lib/routes.js')(app);
 
-
-passport.serializeUser( function(user,done) {
-    done(null, user);
-});
-passport.deserializeUser( function(obj,done) {
-    done(null, obj);
-});
-passport.use(new LocalStrategy( function(username, password, done) {
-    process.nextTick( function() {
-        // Auth check logic
-    });
-}));
-
-passport.use(new GitHubStrategy({
-    clientID: '124f0309abe008b9a88e',
-    clientSecret: 'e680ffa1851db07a4dbdc947e61b535ee70ed665',
-    callbackURL: 'http://k4-dev.cmgeneral.local:8000/auth/github/callback'
-}, function(accessToken, refreshToken, profile, done) {
-    process.nextTick(function() {
-        return done(null, profile);
-    });
-}));
+server.listen(app.get('port'));
+// console.log('Running on http://k4-dev.cmgeneral.local:' + app.get('port'));
+console.log('Running on http://localhost:' + app.get('port'));
