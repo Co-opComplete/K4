@@ -1,7 +1,10 @@
 var express = require('express'),
+    bodyParser = require('body-parser'),
+    cookieParser = require('cookie-parser'),
     app = express(),
     server = require('http').Server(app),
     io = require('socket.io')(server),
+    path = require('path'),
     //engine = require('engine.io'),
     nconf = require('nconf'),
     //RedisStore = require('socket.io/lib/stores/redis'),
@@ -13,8 +16,18 @@ var express = require('express'),
     swig = require('swig'),
     sockets;
 
-app.configure(function(){
-    app.set('port', 8000);
+app.set('port', 8000);
+app.set('rootPath', __dirname);
+
+/***************************************************************************
+* Global Paths
+***************************************************************************/
+app.set('paths', {
+    views: path.join(app.get('rootPath'), 'views'),
+    assets: path.join(app.get('rootPath'), 'assets'),
+    routes: path.join(app.get('rootPath'), 'routes'),
+    conf: path.join(app.get('rootPath'), 'conf'),
+    lib: path.join(app.get('rootPath'), 'lib')
 });
 
 server.listen(app.get('port'));
@@ -88,14 +101,16 @@ io.of('/remote').on('connection', function(socket){
     // Controller Action
     socket.on('controller', function(data) {
         console.log('Recieved controller data: ', data);
-        robots[0].emit('controller', data);
+        if (robots[0]) {
+            robots[0].emit('controller', data);
+        }
     });
 
     // Up Action
     socket.on('up', function(data){
         console.log('Up - ' + data.action);
         //socket.in('robot').send('up');
-        if(data.action === 'released') {
+        if(data.action === 'released' && robots[0]) {
             robots[0].send('up');
         }
     });
@@ -104,7 +119,7 @@ io.of('/remote').on('connection', function(socket){
     socket.on('down', function(data){
         console.log('Down - ' + data.action);
         //socket.in('robot').send('down');
-        if(data.action === 'released') {
+        if(data.action === 'released' && robots[0]) {
             robots[0].send('down');
         }
     });
@@ -129,7 +144,8 @@ io.of('/remote').on('connection', function(socket){
 /*******************************
 ------ Setup for Express -------
 ********************************/
-app.use(express.bodyParser());
+app.use(bodyParser.json());
+app.use(cookieParser());
 app.use('/assets', express.static('assets'));
 // Swig Templating Engine
 app.engine('html', swig.renderFile);

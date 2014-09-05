@@ -36,3 +36,7 @@
     display: block;
     margin: 3px;
 }
+
+#top .navbar-brand {
+    padding: 7px 0 7px 10px;
+}

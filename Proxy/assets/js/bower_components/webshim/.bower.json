@@ -1,0 +1,58 @@
+{
+  "name": "webshim",
+  "version": "1.12.7",
+  "homepage": "https://github.com/aFarkas/webshim",
+  "authors": [
+    "aFarkas <info@corrupt-system.de>"
+  ],
+  "description": "Webshims Lib is a modular capability-based polyfill-loading library",
+  "main": [
+    "js-webshim/dev/polyfiller.js",
+    "js-webshim/minified/polyfiller.js"
+  ],
+  "keywords": [
+    "polyfill",
+    "shim",
+    "ES5",
+    "forms",
+    "widgets",
+    "datepicker",
+    "colorpicker",
+    "slider",
+    "formvalidation",
+    "validation",
+    "mediaelement",
+    "video",
+    "audio",
+    "canvas",
+    "HTML5",
+    "UI",
+    "geolocation"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "swfs",
+    "build",
+    "src",
+    "demos",
+    "Gruntfile.js",
+    "webshims.jquery.json"
+  ],
+  "dependencies": {
+    "jquery": ">= 1.8.2"
+  },
+  "_release": "1.12.7",
+  "_resolution": {
+    "type": "version",
+    "tag": "1.12.7",
+    "commit": "02368d2eb30f056de8f0cb2029c96024a932b8c8"
+  },
+  "_source": "git://github.com/aFarkas/webshim.git",
+  "_target": "1.12.7",
+  "_originalSource": "webshim"
+}

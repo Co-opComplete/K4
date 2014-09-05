@@ -1,0 +1,32 @@
+{
+  "name": "K4-Remote",
+  "version": "0.1.0",
+  "homepage": "https://github.com/dtinteractive/K4",
+  "authors": [
+    "Corey Pauley <corey.pauley@dealertrack.com>",
+    "Joey Nguyen <joey.nguyen@dealertrack.com>",
+    "Daniel Dickerson <daniel.dickerson@dealertrack.com>",
+    "Aaron Seitz <aaron.seitz@dealertrack.com>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "requirejs": "2.1.*",
+    "requirejs-text": "2.0.7",
+    "requirejs-i18n": "2.0.2",
+    "bootstrap": "3.1.*",
+    "jquery": "2.1.*",
+    "lodash": "2.4.1",
+    "webshim": "1.12.7",
+    "momentjs": "~2.6.0",
+    "html5shiv": "~3.7.0",
+    "modernizr": "2.7.1"
+  }
+}

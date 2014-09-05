@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<button id="connect-button" class="btn btn-primary">Connect</button>
+<button id="disconnect-button" class="btn btn-danger">Disconnect</button>
+
+<div id="nav-buttons">
+    <div>
+        <button id="up-button" class="btn btn-metis-5 btn-md"><span class="glyphicon glyphicon-chevron-up"></span></button>
+    </div>
+    <div>
+        <button id="left-button" class="btn btn-metis-5 btn-md"><span class="glyphicon glyphicon-chevron-left"></span></button>
+        <button id="right-button" class="btn btn-metis-5 btn-md"><span class="glyphicon glyphicon-chevron-right"></span></button>
+    </div>
+    <div>
+        <button id="down-button" class="btn btn-metis-5 btn-md"><span class="glyphicon glyphicon-chevron-down"></span></button>
+    </div>
+</div>
+
+<div id="log">
+</div>
+
+<div id='no-gamepad-support'>
+    Your browser does not seem to support Gamepad API, or it might be
+    we’re not detecting it very well. Sorry!
+</div>
+<div id='no-gamepads-connected'>
+    No gamepads seem to be connected. Be sure to plug in a gamepad and then
+    press any of its buttons to activate it.
+</div>
+
+<ul id='gamepads'>
+    <li class='template'>
+
+    <div class='labels'>
+        <label for='stick-1-axis-x'>?</label>
+        <label for='stick-1-axis-y'>?</label>
+        <label for='stick-2-axis-x'>?</label>
+        <label for='stick-2-axis-y'>?</label>
+        <div class='extra-inputs'></div>
+    </div>
+    <div class='index'></div>
+    <marquee class='name' scrolldelay='50' scrollamount='2'></marquee>
+    </li>
+</ul>
+
+{% endblock %}

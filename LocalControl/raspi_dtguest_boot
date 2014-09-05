@@ -1,0 +1,3 @@
+#!/bin/bash
+/bin/sleep 10
+/usr/bin/wget -O /dev/null --post-data='url=http://www.google.com/&checkbox=checkbox&Submit=Accept' http://1.1.2.1/reg.php
