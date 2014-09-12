@@ -1,6 +1,7 @@
 var express = require('express'),
     bodyParser = require('body-parser'),
     cookieParser = require('cookie-parser'),
+    session = require('express-session'),
     app = express(),
     server = require('http').Server(app),
     io = require('socket.io')(server),
@@ -32,6 +33,8 @@ app.set('paths', {
     lib: path.join(app.get('rootPath'), 'lib')
 });
 
+app.set('sessionSecret', '924e7df028edae457068783e6ebd5dc0');
+
 // connect to the database
 mongoose.connect('mongodb://localhost/K4');
 
@@ -54,6 +57,12 @@ nconf.load();
 ********************************/
 app.use(bodyParser.json());
 app.use(cookieParser());
+app.use(session({
+    secret: app.get('sessionSecret'),
+    resave: true,
+    saveUninitialized: true
+    }
+));
 app.use('/assets', express.static('assets'));
 // Swig Templating Engine
 app.engine('html', swig.renderFile);

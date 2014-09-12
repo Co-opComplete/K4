@@ -1,14 +1,7 @@
-// test authentication
-function ensureAuthenticated(req, res, next) {
-    if (req.isAuthenticated()) {
-        return next();
-    } else {
-        res.redirect('/login');
-    }
-}
+var authenticate = require('../middleware/authenticate');
 
 module.exports = function(app) {
-    app.get('/account', ensureAuthenticated, function(req, res) {
+    app.get('/account', authenticate, function(req, res) {
         User.findById(req.session.passport.user, function(err, user) {
             if(err) {
                 console.log(err);
