@@ -27,7 +27,13 @@ module.exports = function(app){
     // });
 
     app.get('/account', ensureAuthenticated, function(req, res) {
-        res.render('account', { user: req.user});
+        User.findById(req.session.passport.user, function(err, user) {
+            if(err) {
+                console.log(err);
+            } else {
+                res.render('account', { user: user});
+            }
+        });
     });
 
     // 403
