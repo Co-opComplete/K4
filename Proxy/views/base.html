@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="app">
     <head>
         <meta charset="UTF-8">
         <title>Test Remote Site</title>
+        <base href="/" />
 
         <!--Mobile first-->
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -45,6 +46,8 @@
             require.config({
                 baseUrl: '/assets/js', urlArgs: (new Date()).getTime()
             });
+
+            window.name = "NG_DEFER_BOOTSTRAP!";
 
             require(['./app.config'], function () {
                 require(['main'], function () {
@@ -371,7 +374,7 @@
             </div><!-- /#left -->
             <div id="content">
                 <div class="outer">
-                    <div class="inner">
+                    <div class="inner" ng-view>
 
                         {% block content %} {% endblock %}
 

@@ -1,9 +1,10 @@
 define([
     'jquery',
     'socketio',
-    'control/gamepad',
-    'control/controller'
-], function ($, io) {
+    'angular',
+    'app',
+    'routes'
+], function ($, io, angular, app, routes) {
     'use strict';
 
     var upPressed,
@@ -59,6 +60,9 @@ define([
     }
 
     $(function(){
+
+        angular.resumeBootstrap([app.name]);
+
 		// Auto-Connect
 		connect();
 
@@ -205,9 +209,5 @@ define([
                     break;
             }
         }); 
-    }); 
-
-    // Start up the controller support
-    controller.init();
-    gamepadSupport.init();
+    });  
 });

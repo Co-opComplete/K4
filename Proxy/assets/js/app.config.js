@@ -31,6 +31,10 @@ require.config({
     //http: URL when running in the browser and during an optimization that
     //file should be skipped because it has no dependencies.
     paths: {
+        'angular': 'bower_components/angular/angular.min',
+
+        'angularRoute': 'bower_components/angular-route/angular-route',
+
         'bootstrap': 'bower_components/bootstrap/dist/js/bootstrap.min',
 
         'jquery': 'bower_components/jquery/dist/jquery.min',
@@ -43,7 +47,7 @@ require.config({
 
         'lodash': 'bower_components/lodash/dist/lodash.compat.min',
         
-        'theme': 'lib/theme.min',
+        'theme': 'lib/theme',
 
         'style-switcher': 'lib/style-switcher',
 
@@ -69,6 +73,12 @@ require.config({
     //However, if mainConfigFile is not an option, the shim config can be
     //inlined in the build config.
     shim: {
+        'angular': {
+            exports: 'angular'
+        },
+        'angularRoute': {
+            deps: ['angular']
+        },
         'bootstrap': {
             deps: ['jquery'],
             exports: 'bootstrap'
@@ -102,6 +112,7 @@ require.config({
         },
         'main': {
             deps: [
+                'angular',
                 'bootstrap',
                 'webshims',
                 'theme'
