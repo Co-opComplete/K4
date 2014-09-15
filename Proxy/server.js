@@ -1,4 +1,7 @@
-var express = require('express'),
+var os = require('os'),
+    ifaces = os.networkInterfaces(),
+    _ = require('lodash'),
+    express = require('express'),
     bodyParser = require('body-parser'),
     cookieParser = require('cookie-parser'),
     session = require('express-session'),
@@ -8,13 +11,7 @@ var express = require('express'),
     path = require('path'),
     mongoose = require('mongoose'),
     passport = require('passport'),
-    //engine = require('engine.io'),
     nconf = require('nconf'),
-    //RedisStore = require('socket.io/lib/stores/redis'),
-    //redis = require('socket.io/node_modules/redis'),
-    //pub = redis.createClient(),
-    //sub = redis.createClient(),
-    //client = redis.createClient(),
     sugar = require('sugar'),
     swig = require('swig'),
     sockets;
@@ -22,18 +19,37 @@ var express = require('express'),
 app.set('port', 8000);
 app.set('rootPath', __dirname);
 
-/***************************************************************************
-* Global Paths
-***************************************************************************/
+// Routers
+app.set('routers', {
+    authed: express.Router(),
+    unauthed: express.Router()
+});
+
+// Global Paths
 app.set('paths', {
     views: path.join(app.get('rootPath'), 'views'),
     assets: path.join(app.get('rootPath'), 'assets'),
     routes: path.join(app.get('rootPath'), 'routes'),
+    middleware: path.join(app.get('rootPath'), 'middleware'),
     conf: path.join(app.get('rootPath'), 'conf'),
     lib: path.join(app.get('rootPath'), 'lib')
 });
 
+// Secret for session storage
 app.set('sessionSecret', '924e7df028edae457068783e6ebd5dc0');
+
+// Get this machine's ip address for websocket clients to use
+_.each(_.keys(ifaces), function (iface) {
+    if (iface !== 'lo') {
+        var info = _.filter(ifaces[iface], function (details) {
+                return details.family === 'IPv4' && !details.internal;
+            });
+        if (info.length > 0) {
+            app.set('ipAddress', info[0].address);
+            return false;
+        }
+    }
+});
 
 // connect to the database
 mongoose.connect('mongodb://localhost/K4');
@@ -78,6 +94,12 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 /*******************************
------- Express routes ----------
+ Express routes and middleware
 ********************************/
 require('./lib/routes.js')(app);
+require('./lib/middleware.js')(app);
+
+// Use the routers
+_.each(app.get('routers'), function (router) {
+    app.use('/', router);
+});

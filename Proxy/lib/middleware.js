@@ -1,10 +1,10 @@
-module.exports = function (app) {  
+module.exports = function (app) {
     var fs = require('fs'),
         path = require('path'),
         _ = require('lodash');
 
-    // This function scrapes the routes directory for route modules
-    function getRoutes(dirPath) {
+    // This function scrapes the middleware directory for route modules
+    function getMiddleware(dirPath) {
         var files = fs.readdirSync(dirPath),
             routes = [];
         _.each(files, function(file) {
@@ -22,7 +22,7 @@ module.exports = function (app) {
         return routes;
     }
 
-    _.each(getRoutes(app.get('paths').routes), function(route) {
+    _.each(getMiddleware(app.get('paths').middleware), function(route) {
         require(route)(app);
     });
 };

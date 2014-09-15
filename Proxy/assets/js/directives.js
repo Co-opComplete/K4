@@ -1,8 +1,8 @@
 define([
     'angular',
     'services',
-    'control/gamepad',
-    'control/controller'
+    'gamepad/gamepad',
+    'gamepad/controller'
 ], function (angular, services) {
     'use strict';
     

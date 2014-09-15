@@ -39,7 +39,7 @@
         <!--Modernizr 3.0-->
         <script type="text/javascript" src="/assets/lib/modernizr-build.min.js"></script>
         <script type="text/javascript" src="/assets/js/require.js"></script>
-        <script type="text/javascript">var port = {{port}};</script>
+        <script type="text/javascript">var port = {{port}}, websocketIP = '{{websocketIP}}';</script>
         <script type="text/javascript">
             'use strict';
 
@@ -161,7 +161,7 @@
                         <span class="label label-danger user-label">16</span> 
                     </a> 
                     <div class="media-body">
-                        <h5 class="media-heading">Archie</h5>
+                        <h5 class="media-heading">{{user.name}}</h5>
                         <ul class="list-unstyled user-info">
                             <li> <a href="">Administrator</a>  </li>
                             <li>Last Access :

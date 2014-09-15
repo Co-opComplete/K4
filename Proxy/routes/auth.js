@@ -9,7 +9,11 @@ var passport = require('passport'),
 module.exports = function (app) {
     // Login
     app.get('/login', function(req, res) {
-        res.render('login', { user: req.user });
+        if (req.isAuthenticated()) {
+            res.redirect('/');
+        } else {
+            res.render('login', { user: req.user });
+        }
     });
 
     // Logout
@@ -30,6 +34,7 @@ module.exports = function (app) {
         });
         github.user.getOrgs({}, function (err, orgs) {
             console.log(orgs);
+            // Only allow users who are in the DTInteractive organization
             _.filter(orgs, function (org) {
                 return org.login === 'dtinteractive';
             });

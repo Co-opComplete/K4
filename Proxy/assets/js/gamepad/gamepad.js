@@ -16,7 +16,9 @@
 * @author mwichary@google.com (Marcin Wichary)
 */
 
-define([], function () {
+define([
+    '../websocket'
+], function (socket) {
 
     var gamepadSupport = {
         // A number of typical buttons recognized by Gamepad API and mapped to
@@ -99,7 +101,7 @@ define([], function () {
             }
 
             // If no gamepads are left, stop the polling loop.
-            if (gamepadSupport.gamepads.length == 0) {
+            if (gamepadSupport.gamepads.length === 0) {
                 gamepadSupport.stopPolling();
             }
 
@@ -240,8 +242,8 @@ define([], function () {
             controller.updateAxis(gamepad.axes[3], gamepadId,
             'stick-2-axis-y', 'stick-2', false);
 
-            if(window.socket){
-                window.socket.emit('controller', {
+            if(socket){
+                socket.emit('controller', {
                     'mode': 'double',
                     'stick-1-x': gamepad.axes[0],
                     'stick-1-y': (gamepad.axes[1]),
