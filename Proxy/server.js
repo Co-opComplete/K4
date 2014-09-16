@@ -96,8 +96,8 @@ app.use(passport.session());
 /*******************************
  Express routes and middleware
 ********************************/
-require('./lib/routes.js')(app);
 require('./lib/middleware.js')(app);
+require('./lib/routes.js')(app);
 
 // Use the routers
 _.each(app.get('routers'), function (router) {
