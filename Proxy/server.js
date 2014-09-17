@@ -31,6 +31,7 @@ app.set('paths', {
     assets: path.join(app.get('rootPath'), 'assets'),
     routes: path.join(app.get('rootPath'), 'routes'),
     middleware: path.join(app.get('rootPath'), 'middleware'),
+    websockets: path.join(app.get('rootPath'), 'websockets'),
     conf: path.join(app.get('rootPath'), 'conf'),
     lib: path.join(app.get('rootPath'), 'lib')
 });
@@ -62,7 +63,7 @@ require('./lib/auth.js');
 server.listen(app.get('port'));
 
 // Set up the proxy sockets for communication between the remote client and the robots
-require('./lib/sockets.js')(io);
+require('./lib/websockets.js')(app, io);
 
 // Setup config
 nconf.file({file: 'conf/config.json'});
@@ -99,7 +100,7 @@ app.use(passport.session());
 require('./lib/middleware.js')(app);
 require('./lib/routes.js')(app);
 
-// Use the routers
+// Use the routers last
 _.each(app.get('routers'), function (router) {
     app.use('/', router);
 });
