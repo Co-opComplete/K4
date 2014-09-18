@@ -26,14 +26,12 @@ module.exports = function (app) {
     app.get('/auth/github', passport.authenticate('github'), function(req, res) {});
 
     app.get('/auth/github/callback', passport.authenticate('github', { failureRedirect: '/login' }), function(req, res) {
-        console.log(req.user);
         // Use the oauth token to authenticate the following github requests
         github.authenticate({
             type: 'oauth',
             token: req.user.oauthToken
         });
         github.user.getOrgs({}, function (err, orgs) {
-            console.log(orgs);
             // Only allow users who are in the DTInteractive organization
             _.filter(orgs, function (org) {
                 return org.login === 'dtinteractive';

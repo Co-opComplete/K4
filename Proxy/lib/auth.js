@@ -6,16 +6,15 @@ passport.use(new GitHubStrategy({
     // clientID: '124f0309abe008b9a88e',
     // clientSecret: 'e680ffa1851db07a4dbdc947e61b535ee70ed665',
     // callbackURL: 'http://k4-dev.cmgeneral.local:8000/auth/github/callback'
-    clientID: 'a82cde9a46d14ea1209f',
-    clientSecret: '39940c2a559af15dff833b523f554f9778090d1c',
-    callbackURL: 'http://localhost:8000/auth/github/callback'
+    clientID: '4d4f04e2b880f7b0c853',
+    clientSecret: '028b26c306e03f1a884b25a0c6736915142ac92f',
+    callbackURL: 'http://192.168.0.2:8000/auth/github/callback'
 }, function(accessToken, refreshToken, profile, done) {
     // process.nextTick(function() {
     //     return done(null, profile);
     // });
-    console.log('profile');
     User.findOne({ oauthID: profile.id }, function(err, user) {
-        if(err) { console.log(err); }
+        if(err) { console.log('error finding user: ', err); }
         if (!err && user !== null) {
             done(null, user);
         } else {
@@ -39,7 +38,6 @@ passport.use(new GitHubStrategy({
 ));
 
 passport.serializeUser( function(user, done) {
-    console.log('serializeUser: ' + user._id);
     done(null, user._id);
 });
 passport.deserializeUser( function(id, done) {

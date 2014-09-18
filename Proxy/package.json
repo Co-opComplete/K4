@@ -7,6 +7,7 @@
         "socket.io": "1.1.x",
         "sugar": "1.4.x",
         "nconf": "0.6.x",
+        "getconfig": "0.3.0",
         "lodash": "2.4.x",
         "mongodb": "^1.4.5",
         "mongoose": "^3.8.11",

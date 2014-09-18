@@ -242,8 +242,6 @@ define([
             controller.updateAxis(gamepad.axes[3], gamepadId,
             'stick-2-axis-y', 'stick-2', false);
 
-            console.log(gamepad);
-
             if(socket){
                 socket.emit('controller', {
                     'mode': 'double',

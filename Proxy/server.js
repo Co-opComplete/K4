@@ -1,4 +1,5 @@
 var os = require('os'),
+    config = require('getconfig'),
     ifaces = os.networkInterfaces(),
     _ = require('lodash'),
     express = require('express'),

@@ -1,22 +1,66 @@
+var _ = require('lodash');
+
 module.exports = function (app, io) {
     var clients = app.get('websocketConnections').clients,
         robots = app.get('websocketConnections').robots;
 
-    io.of('/remote').on('connection', function (socket){
-        clients.push(socket);
+    io.of('/remote').on('connection', function (socket) {
+        clients[socket.id] = socket;
 
         socket.join('remote');
 
         console.log('Got connection');
 
-        socket.on('response', function(data){
+        /* webRTC signaling */
+        socket.on('offer', function (offer) {
+            console.log('got offer');
+            if (_.keys(clients).length > 1) {
+                // Find the peers socket id
+                var peerId = _.find(_.keys(clients), function (key) {
+                    return key !== socket.id;
+                });
+                // emit the offer to that peer
+                clients[peerId].emit('offer', offer);
+            } else {
+                socket.emit('alone', ':(');
+            }
+        });
+
+        socket.on('answer', function (answer) {
+            console.log('got answer');
+            if (_.keys(clients).length > 1) {
+                // Find the peers socket id
+                var peerId = _.find(_.keys(clients), function (key) {
+                    return key !== socket.id;
+                });
+                // emit the offer to that peer
+                clients[peerId].emit('answer', answer);
+            } else {
+                socket.emit('alone', ':(');
+            }
+        });
+
+        socket.on('iceCandidate', function (candidate) {
+            console.log('got iceCandidate');
+            if (_.keys(clients).length > 1) {
+                // Find the peers socket id
+                var peerId = _.find(_.keys(clients), function (key) {
+                    return key !== socket.id;
+                });
+                // emit the offer to that peer
+                clients[peerId].emit('iceCandidate', candidate);
+            } else {
+                socket.emit('alone', ':(');
+            }
+        });
+
+        socket.on('response', function (data) {
             console.log(data);
         });
 
-        socket.on('disconnect', function (){
+        socket.on('disconnect', function () {
             console.log('Disconnecting');
-            var i = clients.indexOf(socket);
-            clients.splice(i, 1);
+            delete clients[socket.id];
         });
 
         // Controller Action
@@ -28,7 +72,7 @@ module.exports = function (app, io) {
         });
 
         // Up Action
-        socket.on('up', function (data){
+        socket.on('up', function (data) {
             console.log('Up - ' + data.action);
             //socket.in('robot').send('up');
             if(data.action === 'released' && robots[0]) {
@@ -37,7 +81,7 @@ module.exports = function (app, io) {
         });
 
         // Down Action
-        socket.on('down', function (data){
+        socket.on('down', function (data) {
             console.log('Down - ' + data.action);
             //socket.in('robot').send('down');
             if(data.action === 'released' && robots[0]) {
@@ -46,7 +90,7 @@ module.exports = function (app, io) {
         });
 
         // Left Action
-        socket.on('left', function (data){
+        socket.on('left', function (data) {
             console.log('Left - ' + data.action);
             if(data.action === 'released') {
                 socket.in('robot').emit('left', {});
@@ -54,7 +98,7 @@ module.exports = function (app, io) {
         });
 
         // Right Action
-        socket.on('right', function (data){
+        socket.on('right', function (data) {
             console.log('Right - ' + data.action);
             if(data.action === 'released') {
                 socket.in('robot').emit('right', {});

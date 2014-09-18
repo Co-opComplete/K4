@@ -51,7 +51,11 @@ require.config({
 
         'style-switcher': 'lib/style-switcher',
 
-        'socketio': 'lib/socket.io'
+        'socketio': 'lib/socket.io',
+
+        'getUserMedia': 'lib/getUserMedia.noFallback.min',
+
+        'rtcPeerConnection': 'lib/rtcpeerconnection.bundle'
     },
 
     //List the modules that will be optimized. All their immediate and deep
@@ -115,6 +119,7 @@ require.config({
                 'angular',
                 'bootstrap',
                 'webshims',
+                'getUserMedia',
                 'theme'
             ]
         }
