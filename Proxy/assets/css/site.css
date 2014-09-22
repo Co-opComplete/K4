@@ -1,13 +1,12 @@
 .login .fa-github {
     display: block;
     margin: 10px auto 0; 
-    width: 200px;
     text-decoration: none;
+    text-align: center;
 }
 
 .login .fa-github span {
     font-size: 20px;
-    vertical-align: middle;
 }
 
 #nav-buttons {

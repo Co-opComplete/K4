@@ -8,7 +8,7 @@ passport.use(new GitHubStrategy({
     // callbackURL: 'http://k4-dev.cmgeneral.local:8000/auth/github/callback'
     clientID: '4d4f04e2b880f7b0c853',
     clientSecret: '028b26c306e03f1a884b25a0c6736915142ac92f',
-    callbackURL: 'http://192.168.0.2:8000/auth/github/callback'
+    callbackURL: 'http://192.168.172.20:8000/auth/github/callback'
 }, function(accessToken, refreshToken, profile, done) {
     // process.nextTick(function() {
     //     return done(null, profile);

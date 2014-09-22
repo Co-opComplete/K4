@@ -53,9 +53,7 @@ require.config({
 
         'socketio': 'lib/socket.io',
 
-        'getUserMedia': 'lib/getUserMedia.noFallback.min',
-
-        'rtcPeerConnection': 'lib/rtcpeerconnection.bundle'
+        'webrtcAdapter': 'lib/adapter'
     },
 
     //List the modules that will be optimized. All their immediate and deep
@@ -119,7 +117,7 @@ require.config({
                 'angular',
                 'bootstrap',
                 'webshims',
-                'getUserMedia',
+                'webrtcAdapter',
                 'theme'
             ]
         }
