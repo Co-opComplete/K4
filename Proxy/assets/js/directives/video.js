@@ -17,7 +17,7 @@ define([
 
     /* Directives */
     angular.module('app.directives.video', ['app.services'])
-        .directive('webrtcVideo', [function () {
+        .directive('k4Video', [function () {
             return {
                 link: function (scope, el, attrs) {
                     var localVideo = $('#local-video')[0],

@@ -17,8 +17,9 @@
 */
 
 define([
+    'jquery',
     '../websocket'
-], function (socket) {
+], function ($, socket) {
 
     var gamepadSupport = {
         // A number of typical buttons recognized by Gamepad API and mapped to
@@ -45,6 +46,10 @@ define([
         // analyzing the polled data if nothing changed (timestamp is the same
         // as last time).
         prevTimestamps: [],
+
+        // Previous states for gamepad buttons; will be either a 1 (pressed) or
+        // a 0 (released).
+        prevButtonStates: [],
 
         /**
         * Initialize support for Gamepad API.
@@ -81,6 +86,9 @@ define([
             // Add the new gamepad on the list of gamepads to look after.
             gamepadSupport.gamepads.push(event.gamepad);
 
+            // Add the buttons states for the new gamepad
+            gamepadSupport.prevButtonStates.push(event.gamepad.buttons);
+
             // Ask the controller to update the screen to show more gamepads.
             controller.updateGamepads(gamepadSupport.gamepads);
 
@@ -92,10 +100,12 @@ define([
         * React to the gamepad being disconnected.
         */
         onGamepadDisconnect: function(event) {
-            // Remove the gamepad from the list of gamepads to monitor.
+            // Remove the gamepad from the list of gamepads to monitor and its previous
+            // button statuses
             for (var i in gamepadSupport.gamepads) {
                 if (gamepadSupport.gamepads[i].index == event.gamepad.index) {
                     gamepadSupport.gamepads.splice(i, 1);
+                    gamepadSupport.prevButtonStates.splice(i, 1);
                     break;
                 }
             }
@@ -214,6 +224,11 @@ define([
 
                     if (rawGamepads[i]) {
                         gamepadSupport.gamepads.push(rawGamepads[i]);
+                        // Update the prevButtonStatuses only if some gamepads are new or
+                        // removeda.
+                        if (gamepadsChanged) {
+                            gamepadSupport.prevButtonStates[i] = rawGamepads[i].buttons;
+                        }
                     }
                 }
 
@@ -221,6 +236,11 @@ define([
                 // on the screen.
                 if (gamepadsChanged) {
                     controller.updateGamepads(gamepadSupport.gamepads);
+                    // Delete any old gamepad statuses from the array by comparing the 
+                    // lengths of the two arrays
+                    if (gamepadSupport.gamepads.length < gamepadSupport.prevButtonStates.length) {
+                        gamepadSupport.prevButtonStates.splice(gamepadSupport.gamepads.length, gamepadSupport.prevButtonStates.length - gamepadSupport.gamepads.length);
+                    }
                 }
             }
         },
@@ -228,8 +248,8 @@ define([
         // Call the controller with new state and ask it to update the visual
         // representation of a given gamepad.
         updateDisplay: function(gamepadId) {
-            var gamepad = gamepadSupport.gamepads[gamepadId];
-
+            var gamepad = gamepadSupport.gamepads[gamepadId],
+                prevStates = gamepadSupport.prevButtonStates[gamepadId];
 
             // Update all the analogue sticks.
             controller.updateAxis(gamepad.axes[0], gamepadId,
@@ -241,6 +261,74 @@ define([
             'stick-2-axis-x', 'stick-2', true);
             controller.updateAxis(gamepad.axes[3], gamepadId,
             'stick-2-axis-y', 'stick-2', false);
+
+            //console.log(gamepad.buttons);
+
+            // Publish button press events if a button has been pressed
+            // ==================================================================
+            // Button 1 (A)
+            if (gamepad.buttons[0] === 0 && prevStates[0] === 1) {
+                $.publish('/gamepad/button/1');
+            }
+            // Button 2 (B)
+            if (gamepad.buttons[1] === 0 && prevStates[1] === 1) {
+                $.publish('/gamepad/button/2');
+            }
+            // Button 3 (X)
+            if (gamepad.buttons[2] === 0 && prevStates[2] === 1) {
+                $.publish('/gamepad/button/3');
+            }
+            // Button 4 (Y)
+            if (gamepad.buttons[3] === 0 && prevStates[3] === 1) {
+                $.publish('/gamepad/button/4');
+            }
+            // Left Bumper
+            if (gamepad.buttons[4] === 0 && prevStates[4] === 1) {
+                $.publish('/gamepad/button/l-bumper');
+            }
+            // Right Bumper
+            if (gamepad.buttons[5] === 0 && prevStates[5] === 1) {
+                $.publish('/gamepad/button/r-bumper');
+            }
+            // Option 1 (Back)
+            if (gamepad.buttons[8] === 0 && prevStates[8] === 1) {
+                $.publish('/gamepad/button/option-1');
+            }
+            // Option 2 (Start)
+            if (gamepad.buttons[9] === 0 && prevStates[9] === 1) {
+                $.publish('/gamepad/button/option-2');
+            }
+            // Left Stick Button
+            if (gamepad.buttons[10] === 0 && prevStates[10] === 1) {
+                $.publish('/gamepad/button/l-stick');
+            }
+            // Right Stick Button
+            if (gamepad.buttons[11] === 0 && prevStates[11] === 1) {
+                $.publish('/gamepad/button/r-stick');
+            }
+            // Up
+            if (gamepad.buttons[12] === 0 && prevStates[12] === 1) {
+                $.publish('/gamepad/button/up');
+            }
+            // Down
+            if (gamepad.buttons[13] === 0 && prevStates[13] === 1) {
+                $.publish('/gamepad/button/down');
+            }
+            // Left
+            if (gamepad.buttons[14] === 0 && prevStates[14] === 1) {
+                $.publish('/gamepad/button/left');
+            }
+            // Right
+            if (gamepad.buttons[15] === 0 && prevStates[15] === 1) {
+                $.publish('/gamepad/button/right');
+            }
+            // Super (Xbox)
+            if (gamepad.buttons[16] === 0 && prevStates[16] === 1) {
+                $.publish('/gamepad/button/super');
+            }
+
+            // Update the previous button states with the current states
+            gamepadSupport.prevButtonStates[gamepadId] = gamepad.buttons;
 
             if(socket){
                 socket.emit('controller', {

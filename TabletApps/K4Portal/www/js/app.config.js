@@ -31,28 +31,12 @@ require.config({
     //http: URL when running in the browser and during an optimization that
     //file should be skipped because it has no dependencies.
     paths: {
-        'angular': 'bower_components/angular/angular.min',
-
-        'angularRoute': 'bower_components/angular-route/angular-route',
-
-        'bootstrap': 'bower_components/bootstrap/dist/js/bootstrap.min',
-
         'jquery': 'bower_components/jquery/dist/jquery.min',
 
-        'pubsub': 'lib/jquery-plugins/pubsub',
+        'moment': 'bower_components/momentjs/moment',
 
-        'moment': 'bower_components/moment/min/moment.min',
-
-        'webshims': 'bower_components/webshim/js-webshim/minified/polyfiller',
-
-        'modernizr': 'bower_components/modernizr/modernizr',
-
-        'lodash': 'bower_components/lodash/dist/lodash.compat.min',
+        'lodash': 'bower_components/lodash/dist/lodash.min',
         
-        'theme': 'lib/theme',
-
-        'style-switcher': 'lib/style-switcher',
-
         'socketio': 'lib/socket.io',
 
         'webrtcAdapter': 'lib/adapter'
@@ -77,28 +61,9 @@ require.config({
     //However, if mainConfigFile is not an option, the shim config can be
     //inlined in the build config.
     shim: {
-        'angular': {
-            exports: 'angular'
-        },
-        'angularRoute': {
-            deps: ['angular']
-        },
-        'bootstrap': {
-            deps: ['jquery'],
-            exports: 'bootstrap'
-        },
         'jquery': {
             init: function () {
                 window.$ = jQuery;
-            }
-        },
-        'webshims': {
-            deps: ['jquery', 'modernizr'],
-            init: function () {
-                $.webshims.setOptions({
-                    basePath: '/bower_components/webshim/js-webshim/minified/shims/',
-                    waitReady: false
-                });
             }
         },
         'socketio': {
@@ -107,21 +72,10 @@ require.config({
         'moment': {
             exports: 'moment'
         },
-        'style-switcher': {
-            deps: ['jquery']
-        },
-        'theme': {
-            deps: ['jquery'],
-            exports: 'theme'
-        },
         'main': {
             deps: [
-                'angular',
-                'bootstrap',
-                'webshims',
                 'webrtcAdapter',
-                'theme',
-                'pubsub'
+                'jquery'
             ]
         }
     }
