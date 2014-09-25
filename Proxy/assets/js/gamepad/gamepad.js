@@ -360,32 +360,13 @@ define([
             // The rotation value will just be the x-value of the right stick
             rotation = gamepad.axes[2];
 
-            console.log('magnitude: ' + magnitude + ', radians: ' + radians + ', rotation: ' + rotation);
+            console.log('magnitude: ' + magnitude.toFixed(4) + ', radians: ' + radians.toFixed(4) + ', rotation: ' + rotation.toFixed(4));
 
             if(socket){
                 socket.emit('controller', {
-                    'mode': 'double',
-                    'button-1': gamepad.buttons[0],
-                    'button-2': gamepad.buttons[1],
-                    'button-3': gamepad.buttons[2],
-                    'button-4': gamepad.buttons[3],
-                    'left-bumper': gamepad.buttons[4],
-                    'right-bumper': gamepad.buttons[5],
-                    'left-trigger': gamepad.buttons[6],
-                    'right-trigger': gamepad.buttons[7],
-                    'option-1': gamepad.buttons[8],
-                    'option-2': gamepad.buttons[9],
-                    'stick-1-button': gamepad.buttons[10],
-                    'stick-2-button': gamepad.buttons[11],
-                    'up': gamepad.buttons[12],
-                    'down': gamepad.buttons[13],
-                    'left': gamepad.buttons[14],
-                    'right': gamepad.buttons[15],
-                    'super': gamepad.buttons[16],
-                    'stick-1-x': gamepad.axes[0],
-                    'stick-1-y': (gamepad.axes[1]),
-                    'stick-2-x': gamepad.axes[2],
-                    'stick-2-y': (-1 * gamepad.axes[3])
+                    'magnitude': magnitude > 1 ? 1.000 : magnitude.toFixed(4),
+                    'radians': radians.toFixed(4),
+                    'rotation': rotation.toFixed(4)
                 });
             }
         }
