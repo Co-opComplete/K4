@@ -249,7 +249,11 @@ define([
         // representation of a given gamepad.
         updateDisplay: function(gamepadId) {
             var gamepad = gamepadSupport.gamepads[gamepadId],
-                prevStates = gamepadSupport.prevButtonStates[gamepadId];
+                prevStates = gamepadSupport.prevButtonStates[gamepadId],
+                magnitude,
+                angle,
+                radian,
+                rotation;
 
             // Update all the analogue sticks.
             controller.updateAxis(gamepad.axes[0], gamepadId,
@@ -329,6 +333,34 @@ define([
 
             // Update the previous button states with the current states
             gamepadSupport.prevButtonStates[gamepadId] = gamepad.buttons;
+
+            // Find the magnitude with pathagoreans theorem (mag^2 = x^2 + y^2)
+            magnitude = Math.sqrt(Math.pow(gamepad.axes[0], 2) + Math.pow(gamepad.axes[1], 2));
+
+            // Find the angle of the triangle (using sin(0) = opp/hyp), then
+            // determine the quadrant to figure out the angle in radians (with
+            // North being 0 and 2pi). Keep in mind that Math.asin returns radians.
+            angle = Math.asin(Math.abs(gamepad.axes[0]) / magnitude);
+
+            // Y value is inverted from what you would expect O.o (wtf)
+            // Top left quadrant
+            if (gamepad.axes[0] <= 0 && gamepad.axes[1] <= 0) {
+                radians = angle;
+            // Bottom left quadrant
+            } else if (gamepad.axes[0] <= 0 && gamepad.axes[1] > 0) {
+                radians = Math.PI - angle;
+            // Bottom right quadrant
+            } else if (gamepad.axes[0] > 0 && gamepad.axes[1] > 0) {
+                radians = Math.PI + angle;
+            // Top right quadrant
+            } else if (gamepad.axes[0] > 0 && gamepad.axes[1] <= 0) {
+                radians = (2 * Math.PI) - angle;
+            }
+
+            // The rotation value will just be the x-value of the right stick
+            rotation = gamepad.axes[2];
+
+            console.log('magnitude: ' + magnitude + ', radians: ' + radians + ', rotation: ' + rotation);
 
             if(socket){
                 socket.emit('controller', {
