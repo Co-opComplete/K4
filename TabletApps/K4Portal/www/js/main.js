@@ -18,12 +18,24 @@ define([
         console.log('Error adding ice candidate: ', err);
     }
 
+    function toggleSettings (settingsTab) {
+        var position = settingsTab.position();
+        var leftPostition = settingsTab.width() - settingsTab.find('.tab').width();
+        if(position.left >= -3){
+            settingsTab.animate({left: '-' + (leftPostition + 2) + 'px'}, 200);
+        } else {
+            settingsTab.animate({left: "-3px"}, 200);
+        }
+    }
+
     document.addEventListener('deviceready', function () {
         console.log('device ready');
         var localVideo = $('#local-video')[0],
             remoteVideo = $('#remote-video')[0],
             connectButton = $('#connect-video'),
             answerButton = $('#answer-call'),
+            settingsTab = $('.settings'),
+            settingsClick = $('.settings .tab'),
             createSrc = window.URL ?
                 window.URL.createObjectURL :
                 (window.webkitURL ?
@@ -72,11 +84,21 @@ define([
             },
             onIceConnectionStateChanged = function () {
                 console.log('Ice connection state changed to: ', peerConnection.iceConnectionState);
+                if(peerConnection.iceConnectionState === 'connected' || peerConnection.iceConnectionState === 'completed'){
+                    connectButton.addClass('disconnect');
+                    connectButton.html('Disconnect');
+                    answerButton.addClass('disabled');
+                    answerButton.prop('disabled', true);
+                } else {
+                    connectButton.removeClass('disconnect');
+                    answerButton.removeClass('disabled');
+                    connectButton.html('Connect');
+                    connectButton.prop('disabled', false);
+                    answerButton.prop('disabled', false);
+                }
             };
 
         socket.on('callRequest', function (offer) {
-            connectButton.prop('disabled', true);
-            answerButton.prop('disabled', false);
             status = 'answering';
         });
 
@@ -158,8 +180,13 @@ define([
         });
 
         $('body').on('click', '#connect-video', function () {
-            console.log('clicked connect');
-            socket.emit('callRequest', {});
+            if(peerConnection.iceConnectionState === 'completed' || peerConnection.iceConnectionState === 'connected'){
+                peerConnection.close();
+            }
+            else {
+                console.log('clicked connect');
+                socket.emit('callRequest', {});
+            }
         }).on('click', '#answer-call', function () {
             try {
                 peerConnection = new RTCPeerConnection(peerConnectionConfig);
@@ -189,6 +216,10 @@ define([
             }, function (err) {
                 console.log('Error creating offer: ', err);
             });
+        });
+
+        settingsTab.find('.tab').on('click', function(){
+            toggleSettings(settingsTab);
         });
 
         getUserMedia({

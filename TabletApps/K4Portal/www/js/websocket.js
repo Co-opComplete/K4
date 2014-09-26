@@ -2,7 +2,7 @@ define([
     'jquery',
     'socketio'
 ], function ($, io) {
-    var socket = io.connect('http://192.168.114.183:8000/remote');
+    var socket = io.connect('http://192.168.114.99:8000/remote');
 
     socket.on('event', function(data){
         console.log(data);
