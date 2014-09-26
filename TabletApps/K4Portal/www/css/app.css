@@ -15,6 +15,9 @@ body {
     /* margin: 0.5rem ; */
     background: white ;
     color: black ;
+
+    padding:0;
+    margin:0;
 }
 
 input, textarea  {
@@ -25,3 +28,66 @@ input, textarea  {
 .align-center {
     text-align: center ;
 }
+
+#video-feeds{
+    position: relative;
+    width:100%;
+    height:100%;
+    overflow: hidden;
+    background: #242424;
+}
+
+#settings{
+    float:left;
+    width:100px;
+    height:100px;
+    background-image:url(icons/icon_cog.svg);
+    background-size: 100px 100px;
+}
+
+#video-buttons{
+    position: absolute;
+    top:3%;
+    left:3%;
+    z-index: 999;
+}
+
+#video-buttons button{
+    color: #fff;
+    background-color: #5cb85c;
+    border-color: #4cae4c;
+    padding:1.1em;
+    font-size:1.5em;
+    border-radius: .2em;
+    opacity: 0.8;
+    outline: none;
+}
+
+#video-buttons button.disabled{
+    background-color: #BDBDBD;
+    border-color: #3B3B3B;
+}
+
+#video-buttons button#connect-video{
+    
+}
+
+#video-buttons button#answer-call{
+    
+}
+
+#video-feeds #remote-video{
+    width:100%;
+    height: 100%;
+    border:3px;
+}
+
+#video-feeds #local-video{
+    position: absolute;
+    height: 30%;
+    width: 30%;
+    bottom: 3%;
+    right: 3%;
+    opacity: 0.95;
+}
+

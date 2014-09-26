@@ -19,6 +19,7 @@ define([
     }
 
     document.addEventListener('deviceready', function () {
+        console.log('device ready');
         var localVideo = $('#local-video')[0],
             remoteVideo = $('#remote-video')[0],
             connectButton = $('#connect-video'),
@@ -31,7 +32,7 @@ define([
                 ),
             peerConnectionConfig = {
                 iceServers: [{'url': 'stun:stun.l.google.com:19302'},
-                    {'url': 'turn:k4@192.168.0.2:8001', 'credential': 'on3dt2.0'}]
+                    {'url': 'turn:k4@192.168.114.203:8001', 'credential': 'on3dt2.0'}]
             },
             sdpConstraints = {
                 'mandatory': {
@@ -157,6 +158,7 @@ define([
         });
 
         $('body').on('click', '#connect-video', function () {
+            console.log('clicked connect');
             socket.emit('callRequest', {});
         }).on('click', '#answer-call', function () {
             try {
