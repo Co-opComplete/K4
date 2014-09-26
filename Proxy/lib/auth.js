@@ -6,9 +6,9 @@ passport.use(new GitHubStrategy({
     // clientID: '124f0309abe008b9a88e',
     // clientSecret: 'e680ffa1851db07a4dbdc947e61b535ee70ed665',
     // callbackURL: 'http://k4-dev.cmgeneral.local:8000/auth/github/callback'
-    clientID: '6f2ca4abad854944f17a',
-    clientSecret: '4ca876c5191d972b564f49ffab2af86270423c43',
-    callbackURL: 'http://192.168.114.183:8000/auth/github/callback'
+    clientID: '4d4f04e2b880f7b0c853',
+    clientSecret: '028b26c306e03f1a884b25a0c6736915142ac92f',
+    callbackURL: 'http://192.168.114.203:8000/auth/github/callback'
 }, function(accessToken, refreshToken, profile, done) {
     // process.nextTick(function() {
     //     return done(null, profile);

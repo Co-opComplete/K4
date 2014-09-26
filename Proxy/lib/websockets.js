@@ -4,7 +4,7 @@ var utils = require('./utils'),
 module.exports = function (app, io) {
     // Websocket variables
     app.set('websocketConnections', {
-        robots: [],
+        robots: {},
         clients: {}
     });
 

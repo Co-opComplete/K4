@@ -91,6 +91,10 @@ module.exports = function (app, io) {
             delete clients[socket.id];
         });
 
+        // Robot info
+        socket.on('requestRobots', function () {
+        });
+
         // Controller Action
         socket.on('controller', function (data) {
             console.log('Recieved controller data: ', data);

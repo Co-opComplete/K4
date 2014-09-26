@@ -1,4 +1,8 @@
 var serialport = require('serialport'), 
+    getmac = require('getmac'),
+    _ = require('lodash'),
+    os = require('os'),
+    ifaces = os.networkInterfaces(),
     serialPort = new serialport.SerialPort('/dev/ttyAMA0', {
         baudrate: 9600,
         parser: serialport.parsers.readline('\n')
@@ -15,6 +19,31 @@ serialPort.on('open', function () {
 
     socket.on('connect', function() {
         console.log('connected to socket'); 
+        // Get the mac address and send it to the server
+        getmac.getMac(function (err, macAddress) {
+            if (err) {
+                console.log('Get MAC address error: ', err);
+                throw err;
+            }
+            var ip;
+
+            console.log('ifaces: ', ifaces);
+
+            // Get this machine's ip address
+            _.each(_.keys(ifaces), function (iface) {
+                if (iface !== 'lo') {
+                    var info = _.filter(ifaces[iface], function (details) {
+                            return details.family === 'IPv4' && !details.internal;
+                        });
+                    if (info.length > 0) {
+                        ip = info[0].address;
+                        return false;
+                    }
+                }
+            });
+
+            socket.emit('announceIP', {mac: macAddress, ip: ip});
+        });
 
         socket.on('message', function (data) {
             console.log('got message: ', data);
@@ -44,23 +73,15 @@ serialPort.on('open', function () {
 
         socket.on('controller', function (data) {
             console.log('got controller data: ', {
-                'l-sign': (data['stick-1-y'] >= 0 ? '+' : '-'),
-                'l-val': Math.floor(Math.abs(data['stick-1-y']) * 100),
-                'r-sign': (data['stick-2-y'] >= 0 ? '+' : '-'),
-                'r-val': Math.floor(Math.abs(data['stick-2-y']) * 100)
+                'magnitude': data.magnitude,
+                'radians': data.radians,
+                'rotation': data.rotation
             });
 
             /*******************************************************************************
-            * Send data for left wheels
+            * Send movement commands in comma separated value with a ; ending
             ********************************************************************************/
-            var l_sign = data['stick-1-y'] >= 0 ? '+' : '-',
-                l_percent = Math.floor(Math.abs(data['stick-1-y']) * 100),
-                l_val = String.fromCharCode(l_percent > 10 ? l_percent : 0),
-                r_sign = data['stick-2-y'] >= 0 ? '+' : '-',
-                r_percent = Math.floor(Math.abs(data['stick-2-y']) * 100),
-                r_val = String.fromCharCode(r_percent > 10 ? r_percent : 0);
-
-            serialPort.write('l' + l_sign + l_val + 'r' + r_sign + r_val, function (err, results) {
+            serialPort.write('' + magnitude + ',' + radians + ',' + rotation + ';', function (err, results) {
                 if (err) {
                     console.log('got error writing "l": ', err);
                 }else{
