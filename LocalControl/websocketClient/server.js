@@ -83,8 +83,10 @@ serialPort.on('open', function () {
             ********************************************************************************/
             serialPort.write('' + magnitude + ',' + radians + ',' + rotation + ';', function (err, results) {
                 if (err) {
+                    socket.send('error writing serial data');
                     console.log('got error writing "l": ', err);
                 }else{
+                    socket.send('successfully wrote serial data');
                     console.log('write "l" results: ', results);
                 }
             });

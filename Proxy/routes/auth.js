@@ -7,14 +7,39 @@ var passport = require('passport'),
     });
 
 module.exports = function (app) {
-    // Login
-    app.get('/login', function(req, res) {
-        if (req.isAuthenticated()) {
-            res.redirect('/');
-        } else {
-            res.render('login', { user: req.user });
-        }
-    });
+    // Login 
+
+    app.route('/login')
+        .get(function(req, res) {
+            console.log('got to login get method');
+            if (req.isAuthenticated()) {
+                res.redirect('/');
+            } else {
+                res.render('login', { user: req.user , messages: req.session.messages});
+            }
+        })
+        .post(function (req, res, next) {
+            passport.authenticate('local', function (err, user, info) {
+                if (err) {
+                    console.log('Error authenticating:'.error, JSON.stringify(err, null, 2).error);
+                    return next(err);
+                }
+                // Redirect to login with a message if failed
+                if (!user) {
+                    req.session.messages = [info.message];
+                    console.log('Could not find user: '.info, JSON.stringify(info, null, 2).info);
+                    return res.redirect('/login');
+                }
+                // Log the user in
+                req.logIn(user, function (err) {
+                    if (err) {
+                        console.log('Error loggin user in: '.error, JSON.stringify(err, null, 2).error);
+                        return next(err);
+                    }
+                    return res.redirect('/');
+                });
+            })(req, res, next);
+        });
 
     // Logout
     app.get('/logout', function(req, res) {
@@ -39,6 +64,7 @@ module.exports = function (app) {
             if (orgs.length > 0) {
                 res.redirect('/');
             } else {
+                req.logout();
                 res.redirect('/login');
             }
         });

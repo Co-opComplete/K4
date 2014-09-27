@@ -4,7 +4,7 @@ module.exports = function (app, io) {
     var clients = app.get('websocketConnections').clients,
         robots = app.get('websocketConnections').robots;
 
-    io.of('/remote').on('connection', function (socket) {
+    return io.of('/remote').on('connection', function (socket) {
         clients[socket.id] = socket;
 
         socket.join('remote');
@@ -98,8 +98,10 @@ module.exports = function (app, io) {
         // Controller Action
         socket.on('controller', function (data) {
             console.log('Recieved controller data: ', data);
-            if (robots[0]) {
-                robots[0].emit('controller', data);
+            console.log('robots: ', robots);
+            if (robots[_.keys(robots)[0]]) {
+                console.log('sending controller data');
+                robots[_.keys(robots)[0]].socket.emit('controller', data);
             }
         });
 

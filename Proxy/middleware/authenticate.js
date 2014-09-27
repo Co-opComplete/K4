@@ -1,12 +1,28 @@
-module.exports = function (app) {
-    var router = app.get('routers').authed;
+var _ = require('lodash');
 
-    router.use(function (req, res, next) {
+module.exports = function (app) {
+    var ignoredPaths = [
+        '/login',
+        '/logout',
+        '/auth/github',
+        '/auth/github/callback',
+        '/favicon.ico' // Holy shit this was annoying
+    ];
+
+    app.use(function (req, res, next) {
+        // Skip if this is a path where authentication is not needed
+        if (_.indexOf(ignoredPaths, req.path.replace(/\/$/g,'')) >= 0) {
+            return next();
+        }
+
+        console.log('got to auth middleware');
+
+        // Check if the user is authenticated and set the user as a local
+        // variable for templates
         if (req.isAuthenticated()) {
             app.locals.user = req.user;
             return next();
-        } else {
-            res.redirect('/login');
-        }
+        } 
+        res.redirect('/login');
     });
 };

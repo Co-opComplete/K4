@@ -3,11 +3,11 @@ var Robot = require('../models/robot');
 module.exports = function (app, io) {
     var robots = app.get('websocketConnections').robots;
 
-    io.of('/robot').on('connection', function (socket) {
+    return io.of('/robot').on('connection', function (socket) {
         console.log('got robot connnection');
 
         socket.join('robot');
-        robots.push(socket);
+        //robots.push(socket);
 
         socket.on('message', function (data) {
             console.log('got message: ', data);
@@ -29,6 +29,12 @@ module.exports = function (app, io) {
                             name: 'K4'
                         }); 
                     }
+                    robot.socket = socket;
+                    robots[socket.id] = robot;
+                    // Update the list of robots on all clients
+                    app.get('rooms').clients.emit('updateRobots', robots);
+
+                    // Save the robot
                     robot.save(function (err) {
                         if (err) {
                             console.log('Error saving robot: ', err);
@@ -41,8 +47,7 @@ module.exports = function (app, io) {
 
         socket.on('disconnect', function (){
             console.log('Disconnecting');
-            var i = robots.indexOf(socket);
-            robots.splice(i, 1);
+            delete robots[socket.id];
         });
     });
 };

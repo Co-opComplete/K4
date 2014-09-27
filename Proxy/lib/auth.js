@@ -1,20 +1,42 @@
 var passport = require('passport'),
+    colors = require('colors'),
+    config = require('getconfig'),
+    LocalStrategy = require('passport-local').Strategy,
     GitHubStrategy = require('passport-github').Strategy,
     User = require('../models/user');
 
-passport.use(new GitHubStrategy({
-    // clientID: '124f0309abe008b9a88e',
-    // clientSecret: 'e680ffa1851db07a4dbdc947e61b535ee70ed665',
-    // callbackURL: 'http://k4-dev.cmgeneral.local:8000/auth/github/callback'
-    clientID: '6f2ca4abad854944f17a',
-    clientSecret: '4ca876c5191d972b564f49ffab2af86270423c43',
-    callbackURL: 'http://192.168.114.99:8000/auth/github/callback'
-}, function(accessToken, refreshToken, profile, done) {
-    // process.nextTick(function() {
-    //     return done(null, profile);
-    // });
+// Local authentication strategy
+passport.use(new LocalStrategy(
+    function (username, password, done) {
+        User.findOne().or([{username: username}, {email: username}]).exec(function (err, user) {
+            if (err) {
+                console.log('Error finding user: '.error, JSON.stringify(err, null, 2).error);
+                return done(err);
+            }
+            if (!user) {
+                return done(null, false, {message: 'Invalid username or password'});
+            }
+            user.checkPassword(password, function (err, matches) {
+                if (err) {
+                    console.log('Error checking password: '.error, JSON.stringify(err, null, 2).error);
+                    return done(err);
+                }
+                if (!matches) {
+                    return done(null, false, {message: 'Invalid username or password'});
+                }
+                return done(null, user);
+            });
+        });
+    }
+));
+
+// Github authentication strategy
+passport.use(new GitHubStrategy(config.githubStrategy, function(accessToken, refreshToken, profile, done) {
+    console.log('profile: '.info, JSON.stringify(profile, null, 2).verbose);
     User.findOne({ oauthID: profile.id }, function(err, user) {
-        if(err) { console.log('error finding user: ', err); }
+        if (err) {
+            console.log('Error finding user: '.error, JSON.stringify(err, null, 2).error);
+        }
         if (!err && user !== null) {
             done(null, user);
         } else {
@@ -25,12 +47,11 @@ passport.use(new GitHubStrategy({
                 created: Date.now()
             });
             user.save(function(err) {
-                if(err) {
-                    console.log(err);
-                } else {
-                    console.log("Saving user...");
-                    done(null, user);
+                if (err) {
+                    console.log('Error saving user: '.error, JSON.stringify(err, null, 2).error);
+                    return done(err);
                 }
+                done(null, user);
             });
         }
     });
@@ -40,10 +61,13 @@ passport.use(new GitHubStrategy({
 passport.serializeUser( function(user, done) {
     done(null, user._id);
 });
+
 passport.deserializeUser( function(id, done) {
     User.findById(id, function(err, user) {
-        //console.log(user);
-        if (!err) { done(null, user); }
-        else { done(err, null); }
+        if (!err) {
+            done(null, user);
+        } else {
+            done(err, null);
+        }
     });
 });

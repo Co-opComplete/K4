@@ -1,3 +1,18 @@
+.login .logo {
+    margin-right: 15px;
+}
+
+.login .site-title {
+    color: #ccc;
+    font-size: 2em;
+    font-weight: bold;
+    vertical-align: middle;
+}
+
+.login .login-util {
+    margin-top: 10px;
+}
+
 .login .fa-github {
     display: block;
     margin: 10px auto 0; 

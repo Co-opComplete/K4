@@ -1,7 +1,9 @@
 var utils = require('./utils'),
+    path = require('path'),
     _ = require('lodash');
 
 module.exports = function (app, io) {
+    var rooms = app.get('rooms');
     // Websocket variables
     app.set('websocketConnections', {
         robots: {},
@@ -9,6 +11,7 @@ module.exports = function (app, io) {
     });
 
     _.each(utils.getModulesInDirectory(app.get('paths').websockets, ['_', '.']), function(websocket) {
-        require(websocket)(app, io);
+        rooms[path.basename(websocket, '.js')] = require(websocket)(app, io);
+        app.set('rooms', rooms);
     });
 };

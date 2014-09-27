@@ -5,7 +5,8 @@ define([
     'services',
     'directives/video',
     'directives/control',
-    'directives/context-menu'
+    'directives/context-menu',
+    'directives/robot-list'
 ], function ($, _, angular, services) {
     'use strict';
 
@@ -14,6 +15,7 @@ define([
         'app.services',
         'app.directives.video',
         'app.directives.control',
-        'app.directives.contextMenu'
+        'app.directives.contextMenu',
+        'app.directives.robot-list'
     ]);
 });

@@ -1,5 +1,6 @@
 var os = require('os'),
     config = require('getconfig'),
+    colors = require('colors'),
     ifaces = os.networkInterfaces(),
     _ = require('lodash'),
     express = require('express'),
@@ -17,14 +18,14 @@ var os = require('os'),
     swig = require('swig'),
     sockets;
 
+// Config colors for logging
+colors.setTheme(config.colors);
+
 app.set('port', 8000);
 app.set('rootPath', __dirname);
 
-// Routers
-app.set('routers', {
-    authed: express.Router(),
-    unauthed: express.Router()
-});
+// Rooms
+app.set('rooms', {});
 
 // Global Paths
 app.set('paths', {
@@ -74,6 +75,8 @@ nconf.load();
 ------ Setup for Express -------
 ********************************/
 app.use(bodyParser.json());
+app.use(bodyParser.text());
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
 app.use(session({
     secret: app.get('sessionSecret'),
@@ -100,8 +103,3 @@ app.use(passport.session());
 ********************************/
 require('./lib/middleware.js')(app);
 require('./lib/routes.js')(app);
-
-// Use the routers last
-_.each(app.get('routers'), function (router) {
-    app.use('/', router);
-});

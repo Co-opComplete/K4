@@ -51,6 +51,10 @@ define([
         // a 0 (released).
         prevButtonStates: [],
 
+        prevMessage: {magnitude: '0.0000', radians: '0.0000', rotation: '+0.0000', tilt: '+0.0000'},
+
+        prevMessageTimestamp: new Date().getTime(),
+
         /**
         * Initialize support for Gamepad API.
         */
@@ -176,7 +180,8 @@ define([
             gamepadSupport.pollGamepads();
 
             for (var i in gamepadSupport.gamepads) {
-                var gamepad = gamepadSupport.gamepads[i];
+                var gamepad = gamepadSupport.gamepads[i],
+                    currentTimestamp = new Date().getTime();
 
                 // Don’t do anything if the current timestamp is the same as previous
                 // one, which means that the state of the gamepad hasn’t changed.
@@ -185,6 +190,10 @@ define([
                 // or undefined.
                 if (gamepad.timestamp &&
                     (gamepad.timestamp == gamepadSupport.prevTimestamps[i])) {
+                        if (currentTimestamp - gamepadSupport.prevMessageTimestamp > 250) {
+                            socket.emit('controller', gamepadSupport.prevMessage);
+                            gamepadSupport.prevMessageTimestamp = currentTimestamp;
+                        }
                         continue;
                     }
                     gamepadSupport.prevTimestamps[i] = gamepad.timestamp;
@@ -251,9 +260,17 @@ define([
             var gamepad = gamepadSupport.gamepads[gamepadId],
                 prevStates = gamepadSupport.prevButtonStates[gamepadId],
                 magnitude,
+                maxMagnitude = 1,
+                magnitudeStr,
                 angle,
-                radian,
-                rotation;
+                radians,
+                radianStr,
+                rotation,
+                rotationStr,
+                tilt,
+                tiltStr,
+                msg,
+                currentTimestamp = new Date().getTime();
 
             // Update all the analogue sticks.
             controller.updateAxis(gamepad.axes[0], gamepadId,
@@ -360,14 +377,33 @@ define([
             // The rotation value will just be the x-value of the right stick
             rotation = gamepad.axes[2];
 
-            console.log('magnitude: ' + magnitude.toFixed(4) + ', radians: ' + radians.toFixed(4) + ', rotation: ' + rotation.toFixed(4));
+            // The tilt value will just be the y-value of the right stick
+            tilt = gamepad.axes[3];
+
+            console.log('magnitude: ' + magnitude.toFixed(4) + ', radians: ' + radians.toFixed(4) + ', rotation: ' + rotation.toFixed(4) + ', tilt: ' + tilt.toFixed(4));
+
+            magnitudeStr = '' + (magnitude > 1 ? maxMagnitude.toFixed(4) : magnitude.toFixed(4));
+            radianStr = '' + radians.toFixed(4);
+            rotationStr = '' + (rotation.toFixed(4) >= 0 ? '+' + rotation.toFixed(4) : rotation.toFixed(4));
+            tiltStr = '' + (tilt.toFixed(4) >= 0 ? '+' + tilt.toFixed(4) : tilt.toFixed(4));
+
+            msg = {
+                'magnitude': magnitudeStr,
+                'radians': radianStr,
+                'rotation': rotationStr === '0.0000' ? '+0.0000' : rotationStr,
+                'tilt': tiltStr === '0.0000' ? '+0.0000' : tiltStr
+            };
 
             if(socket){
-                socket.emit('controller', {
-                    'magnitude': magnitude > 1 ? 1.000 : magnitude.toFixed(4),
-                    'radians': radians.toFixed(4),
-                    'rotation': rotation.toFixed(4)
-                });
+                console.log('currentTimestamp: ', currentTimestamp);
+                console.log('prevTimestamp: ', gamepadSupport.prevMessageTimestamp);
+                console.log('diff: ', currentTimestamp - gamepadSupport.prevMessageTimestamp);
+                if (currentTimestamp - gamepadSupport.prevMessageTimestamp > 100) {
+                    console.log('emitting message');
+                    socket.emit('controller', msg);
+                    gamepadSupport.prevMessageTimestamp = currentTimestamp;
+                    gamepadSupport.prevMessage = msg;
+                }
             }
         }
     };
