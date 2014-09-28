@@ -4,12 +4,14 @@ define([
     'services',
     'directives',
     'controllers',
-    'angularRoute'
+    'angularUIRouter',
+    'angularSocketIO'
 ], function (angular, filters, services, directives, controllers) {
     'use strict';
 
     var app = angular.module('app', [
-            'ngRoute',
+            'ui.router',
+            'btford.socket-io',
             'app.filters',
             'app.services',
             'app.directives',

@@ -23,7 +23,9 @@
         "engine.io": "1.0.x",
         "colors": "0.6.x",
         "bcrypt": "^0.8.0",
-        "validator": "^3.19.0"
+        "validator": "^3.19.0",
+        "hiredis": "^0.1.17",
+        "redis": "^0.12.1"
     },
     "devDependencies": {},
     "keywords": [

@@ -1,4 +1,6 @@
-var _ = require('lodash');
+var _ = require('lodash'),
+    redis = require('redis'),
+    client = redis.createClient();
 
 module.exports = function (app, io) {
     var clients = app.get('websocketConnections').clients,
@@ -97,10 +99,7 @@ module.exports = function (app, io) {
 
         // Controller Action
         socket.on('controller', function (data) {
-            console.log('Recieved controller data: ', data);
-            console.log('robots: ', robots);
             if (robots[_.keys(robots)[0]]) {
-                console.log('sending controller data');
                 robots[_.keys(robots)[0]].socket.emit('controller', data);
             }
         });

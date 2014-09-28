@@ -395,9 +395,6 @@ define([
             };
 
             if(socket){
-                console.log('currentTimestamp: ', currentTimestamp);
-                console.log('prevTimestamp: ', gamepadSupport.prevMessageTimestamp);
-                console.log('diff: ', currentTimestamp - gamepadSupport.prevMessageTimestamp);
                 if (currentTimestamp - gamepadSupport.prevMessageTimestamp > 100) {
                     console.log('emitting message');
                     socket.emit('controller', msg);

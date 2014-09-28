@@ -7,7 +7,7 @@ define([
 
     /* Directives */
     angular.module('app.directives.contextMenu', ['app.services'])
-        .directive('k4ContextMenu', [function () {
+        .directive('k4ContextMenu', ['gamepad', function (gamepad) {
             return {
                 templateUrl: 'assets/partials/contextMenu.html',
                 link: function (scope, el, attrs) {
@@ -44,14 +44,14 @@ define([
                         };
 
                     // Open the menu when the option 2 button is clicked
-                    $.subscribe('/gamepad/button/option-2', function () {
+                    gamepad.on('start_pressed', function () {
                         // Toggle the class
                         $el.toggleClass('active');
 
                         if (menuOpen) {
                             // Unsubscribe to the navigation buttons
-                            $.unsubscribe('/gamepad/button/up', onUpPressed);
-                            $.unsubscribe('/gamepad/button/down', onDownPressed);
+                            gamepad.off('up_pressed', onUpPressed);
+                            gamepad.off('down_pressed', onDownPressed);
 
                             // Reset the active item to the first item, but wait for
                             // the animation to finish.
@@ -66,8 +66,8 @@ define([
                             });
 
                             // Subscribe to the navigation buttons
-                            $.subscribe('/gamepad/button/up', onUpPressed);
-                            $.subscribe('/gamepad/button/down', onDownPressed);
+                            gamepad.on('up_pressed', onUpPressed);
+                            gamepad.on('down_pressed', onDownPressed);
                         }
 
                         // Update the menuOpen status

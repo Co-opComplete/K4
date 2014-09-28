@@ -2,20 +2,24 @@ var serialport = require('serialport'),
     getmac = require('getmac'),
     _ = require('lodash'),
     os = require('os'),
-    ifaces = os.networkInterfaces(),
+    ifaces = os.networkInterfaces();
+    /*
     serialPort = new serialport.SerialPort('/dev/ttyAMA0', {
         baudrate: 9600,
         parser: serialport.parsers.readline('\n')
     }); 
+    */
 
-serialPort.on('open', function () {
-    var socket = require('socket.io-client')('ws://192.168.114.170:8000/robot');
+//serialPort.on('open', function () {
+    var socket = require('socket.io-client')('ws://localhost:8000/robot');
 
     console.log('Serial port opened');
 
+    /*
     serialPort.on('data', function (data) {
         console.log('data received: ', data);
     });
+    */
 
     socket.on('connect', function() {
         console.log('connected to socket'); 
@@ -26,8 +30,6 @@ serialPort.on('open', function () {
                 throw err;
             }
             var ip;
-
-            console.log('ifaces: ', ifaces);
 
             // Get this machine's ip address
             _.each(_.keys(ifaces), function (iface) {
@@ -72,24 +74,28 @@ serialPort.on('open', function () {
         });
 
         socket.on('controller', function (data) {
+            //console.log('got controller data: ', new Date().getTime());
+            /*
             console.log('got controller data: ', {
                 'magnitude': data.magnitude,
                 'radians': data.radians,
-                'rotation': data.rotation
+                'rotation': data.rotation,
+                'tilt': data.tilt
             });
+            */
 
             /*******************************************************************************
             * Send movement commands in comma separated value with a ; ending
             ********************************************************************************/
-            serialPort.write('' + magnitude + ',' + radians + ',' + rotation + ';', function (err, results) {
+            /*
+            serialPort.write('#' + data.magnitude + ',' + data.radians + ',' + data.rotation + ',' + data.tilt + ';', function (err, results) {
                 if (err) {
                     socket.send('error writing serial data');
-                    console.log('got error writing "l": ', err);
                 }else{
                     socket.send('successfully wrote serial data');
-                    console.log('write "l" results: ', results);
                 }
             });
+            */
 
             /*
             // Write sign for value
@@ -149,4 +155,4 @@ serialPort.on('open', function () {
 
         socket.send('This is a message!');
     });
-});
+//});

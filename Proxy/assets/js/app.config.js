@@ -33,7 +33,11 @@ require.config({
     paths: {
         'angular': 'bower_components/angular/angular.min',
 
-        'angularRoute': 'bower_components/angular-route/angular-route',
+        //'angularRoute': 'bower_components/angular-route/angular-route',
+
+        'angularUIRouter': 'bower_components/angular-ui-router/release/angular-ui-router.min',
+
+        'angularSocketIO': 'bower_components/angular-socket-io/socket.min',
 
         'bootstrap': 'bower_components/bootstrap/dist/js/bootstrap.min',
 
@@ -80,8 +84,11 @@ require.config({
         'angular': {
             exports: 'angular'
         },
-        'angularRoute': {
+        'angularUIRouter': {
             deps: ['angular']
+        },
+        'angularSocketIO': {
+            deps: ['angular', 'socketio']
         },
         'bootstrap': {
             deps: ['jquery'],

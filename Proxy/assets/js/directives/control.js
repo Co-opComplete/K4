@@ -1,19 +1,19 @@
 define([
     'angular',
-    'services',
-    'gamepad/gamepad',
-    'gamepad/controller'
+    'services'
+    //'gamepad/gamepad',
+    //'gamepad/controller'
 ], function (angular, services) {
     'use strict';
 
     /* Directives */
     angular.module('app.directives.control', ['app.services'])
-        .directive('k4Controller', [function () {
+        .directive('k4Controller', ['gamepad', function (gamepad) {
             return {
                 link: function (scope, el, attrs) {
                         // Start up the controller support
-                        controller.init();
-                        gamepadSupport.init();
+                        //controller.controller.init();
+                        //controller.gamepadSupport.init();
                     }
             };
         }]);
