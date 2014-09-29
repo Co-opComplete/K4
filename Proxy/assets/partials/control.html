@@ -11,26 +11,26 @@
     </ul>
 </div>
 
-<div id='no-gamepad-support'>
+<div id="no-gamepad-support" ng-hide="gamepadSupported">
     Your browser does not seem to support Gamepad API, or it might be
     we’re not detecting it very well. Sorry!
 </div>
-<div id='no-gamepads-connected'>
+<div id="no-gamepads-connected" ng-hide="gamepadConnected">
     No gamepads seem to be connected. Be sure to plug in a gamepad and then
     press any of its buttons to activate it.
 </div>
 
-<ul id='gamepads' k4-controller>
-    <li class='template'>
+<ul id="gamepads" ng-show="gamepadConnected" k4-controller>
+    <li class="template">
 
-    <div class='labels'>
-        <label for='stick-1-axis-x'>?</label>
-        <label for='stick-1-axis-y'>?</label>
-        <label for='stick-2-axis-x'>?</label>
-        <label for='stick-2-axis-y'>?</label>
-        <div class='extra-inputs'></div>
+    <div class="labels">
+        <label for="stick-1-axis-x">?</label>
+        <label for="stick-1-axis-y">?</label>
+        <label for="stick-2-axis-x">?</label>
+        <label for="stick-2-axis-y">?</label>
+        <div class="extra-inputs"></div>
     </div>
-    <div class='index'></div>
-    <marquee class='name' scrolldelay='50' scrollamount='2'></marquee>
+    <div class="index"></div>
+    <marquee class="name" scrolldelay="50" scrollamount="2"></marquee>
     </li>
 </ul>

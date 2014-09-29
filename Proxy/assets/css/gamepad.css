@@ -61,7 +61,6 @@ a {
   font-weight: 200;
   text-align: center;
   padding: 100px 50px;
-  display: none;
 }
 #no-gamepad-support.visible {
   display: block;
