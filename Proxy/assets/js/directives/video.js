@@ -2,9 +2,8 @@ define([
     'jquery',
     'lodash',
     'angular',
-    'services',
-    'websocket'
-], function ($, _, angular, services, socket) {
+    'services'
+], function ($, _, angular, services) {
     'use strict';
 
     function onAddIceCandidateSuccess () {
@@ -17,7 +16,7 @@ define([
 
     /* Directives */
     angular.module('app.directives.video', ['app.services'])
-        .directive('k4Video', [function () {
+        .directive('k4Video', ['socket', function (socket) {
             return {
                 link: function (scope, el, attrs) {
                     var localVideo = $('#local-video')[0],

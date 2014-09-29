@@ -68,6 +68,8 @@ define([
                             // Subscribe to the navigation buttons
                             gamepad.on('up_pressed', onUpPressed);
                             gamepad.on('down_pressed', onDownPressed);
+                            console.log('onUpPressed id: ', onUpPressed.__uuid);
+                            console.log('onDownPressed id: ', onDownPressed.__uuid);
                         }
 
                         // Update the menuOpen status

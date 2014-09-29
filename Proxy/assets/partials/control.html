@@ -20,17 +20,10 @@
     press any of its buttons to activate it.
 </div>
 
-<ul id="gamepads" ng-show="gamepadConnected" k4-controller>
-    <li class="template">
-
-    <div class="labels">
-        <label for="stick-1-axis-x">?</label>
-        <label for="stick-1-axis-y">?</label>
-        <label for="stick-2-axis-x">?</label>
-        <label for="stick-2-axis-y">?</label>
-        <div class="extra-inputs"></div>
+<div id="gamepads" ng-show="gamepadConnected" k4-controller>
+    <div class="gamepad" ng-repeat="gamepad in gamepads">
+        <h2>{{gamepad.id}}</h2>
+        <span>{{gamepad.index}}</span>
+        <p>{{gamepad.buttons}}</span>
     </div>
-    <div class="index"></div>
-    <marquee class="name" scrolldelay="50" scrollamount="2"></marquee>
-    </li>
-</ul>
+</div>

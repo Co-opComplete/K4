@@ -1,15 +1,12 @@
 define([
     'angular',
-    'services',
-    'websocket',
-    'gamepad/gamepad',
-    'gamepad/controller'
-], function (angular, services, socket) {
+    'services'
+], function (angular, services) {
     'use strict';
 
     /* Directives */
     angular.module('app.directives.robot-list', ['app.services'])
-        .directive('robotList', [function () {
+        .directive('robotList', ['socket', function (socket) {
             return {
                 link: function (scope, el, attrs) {
                         socket.on('updateRobots', function (data) {
