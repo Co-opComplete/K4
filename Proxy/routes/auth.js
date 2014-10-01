@@ -11,7 +11,6 @@ module.exports = function (app) {
 
     app.route('/login')
         .get(function(req, res) {
-            console.log('got to login get method');
             if (req.isAuthenticated()) {
                 res.redirect('/');
             } else {

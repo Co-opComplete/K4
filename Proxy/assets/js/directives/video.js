@@ -1,9 +1,7 @@
 define([
     'jquery',
-    'lodash',
     'angular',
-    'services'
-], function ($, _, angular, services) {
+], function ($, angular) {
     'use strict';
 
     function onAddIceCandidateSuccess () {

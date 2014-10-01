@@ -1,9 +1,6 @@
 define([
-    'angular',
-    'services'
-    //'gamepad/gamepad',
-    //'gamepad/controller'
-], function (angular, services) {
+    'angular'
+], function (angular) {
     'use strict';
 
     /* Directives */

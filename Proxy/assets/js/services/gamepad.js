@@ -70,10 +70,6 @@ define([
                         // A collection of events to fire when the state of the controller changes
                         gamepadEvents = [],
 
-                        prevMessage = {magnitude: '0.0000', radians: '0.0000', rotation: '+0.0000', tilt: '+0.0000'},
-
-                        prevMessageTimestamp = new Date().getTime(),
-
                         /*
                         * Helper function for creating custom events for a controller
                         */
@@ -131,6 +127,12 @@ define([
                                         detail: detail
                                     }),
                                 rightStickChanged: new CustomEvent('right_stick_changed', {
+                                        detail: detail
+                                    }),
+                                gamepadChanged: new CustomEvent('gamepad_changed', {
+                                        detail: detail
+                                    }),
+                                axesChanged: new CustomEvent('axes_changed', {
                                         detail: detail
                                     })
                             };
@@ -267,8 +269,7 @@ define([
                             pollGamepads();
 
                             for (var i in that.gamepads) {
-                                var gamepad = that.gamepads[i],
-                                    currentTimestamp = new Date().getTime();
+                                var gamepad = that.gamepads[i];
 
                                 // Don’t do anything if the current timestamp is the same as previous
                                 // one, which means that the state of the gamepad hasn’t changed.
@@ -277,10 +278,6 @@ define([
                                 // or undefined.
                                 if (gamepad.timestamp &&
                                     (gamepad.timestamp == prevTimestamps[i])) {
-                                        if (currentTimestamp - prevMessageTimestamp > 250) {
-                                            socket.emit('controller', prevMessage);
-                                            prevMessageTimestamp = currentTimestamp;
-                                        }
                                         continue;
                                     }
                                     prevTimestamps[i] = gamepad.timestamp;
@@ -383,36 +380,12 @@ define([
                                 gamepadPrevButtonStates = prevButtonStates[gamepadId],
                                 gamepadPrevAxesStates = prevAxesStates[gamepadId],
                                 events = gamepadEvents[gamepadId],
-                                magnitude,
-                                maxMagnitude = 1,
-                                magnitudeStr,
-                                angle,
-                                radians,
-                                radianStr,
-                                rotation,
-                                rotationStr,
-                                tilt,
-                                tiltStr,
-                                msg,
-                                currentTimestamp = new Date().getTime();
+                                axesChanged = false;
 
-                            // Update all the analogue sticks.
-                            /*
-                            controller.updateAxis(gamepad.axes[0], gamepadId,
-                            'stick-1-axis-x', 'stick-1', true);
-
-                            controller.updateAxis(gamepad.axes[1], gamepadId,
-                            'stick-1-axis-y', 'stick-1', false);
-                            controller.updateAxis(gamepad.axes[2], gamepadId,
-                            'stick-2-axis-x', 'stick-2', true);
-                            controller.updateAxis(gamepad.axes[3], gamepadId,
-                            'stick-2-axis-y', 'stick-2', false);
-                            */
-
-                            //console.log(gamepad.buttons);
+                            // Publish the gamepad changed event always
+                            document.dispatchEvent(events.gamepadChanged);
 
                             // Publish button press events if a button has been pressed
-                            // ==================================================================
                             // Button 1 (A)
                             if (gamepad.buttons[0] === 0 && gamepadPrevButtonStates[0] === 1) {
                                 document.dispatchEvent(events.aPressed);
@@ -482,68 +455,24 @@ define([
                             if (gamepad.axes[0] !== gamepadPrevAxesStates[0] ||
                                 gamepad.axes[1] !== gamepadPrevAxesStates[1]) {
                                 document.dispatchEvent(events.leftStickChanged);
+                                axesChanged = true;
                             }
 
                             // Right Stick
                             if (gamepad.axes[2] !== gamepadPrevAxesStates[2] ||
                                 gamepad.axes[3] !== gamepadPrevAxesStates[3]) {
                                 document.dispatchEvent(events.rightStickChanged);
+                                axesChanged = true;
+                            }
+
+                            // Dispatch the axesChanged event if the left or the right
+                            // axes values have changed
+                            if (axesChanged) {
+                                document.dispatchEvent(events.axesChanged);
                             }
 
                             // Update the previous axes states with the current states
-                            prevAxesStates[gamepadId] = gamepad.axes;
-
-                            // Find the magnitude with pathagoreans theorem (mag^2 = x^2 + y^2)
-                            magnitude = Math.sqrt(Math.pow(gamepad.axes[0], 2) + Math.pow(gamepad.axes[1], 2));
-
-                            // Find the angle of the triangle (using sin(0) = opp/hyp), then
-                            // determine the quadrant to figure out the angle in radians (with
-                            // North being 0 and 2pi). Keep in mind that Math.asin returns radians.
-                            angle = Math.asin(Math.abs(gamepad.axes[0]) / magnitude);
-
-                            // Y value is inverted from what you would expect O.o (wtf)
-                            // Top left quadrant
-                            if (gamepad.axes[0] <= 0 && gamepad.axes[1] <= 0) {
-                                radians = angle;
-                            // Bottom left quadrant
-                            } else if (gamepad.axes[0] <= 0 && gamepad.axes[1] > 0) {
-                                radians = Math.PI - angle;
-                            // Bottom right quadrant
-                            } else if (gamepad.axes[0] > 0 && gamepad.axes[1] > 0) {
-                                radians = Math.PI + angle;
-                            // Top right quadrant
-                            } else if (gamepad.axes[0] > 0 && gamepad.axes[1] <= 0) {
-                                radians = (2 * Math.PI) - angle;
-                            }
-
-                            // The rotation value will just be the x-value of the right stick
-                            rotation = gamepad.axes[2];
-
-                            // The tilt value will just be the y-value of the right stick
-                            tilt = gamepad.axes[3];
-
-                            //console.log('magnitude: ' + magnitude.toFixed(4) + ', radians: ' + radians.toFixed(4) + ', rotation: ' + rotation.toFixed(4) + ', tilt: ' + tilt.toFixed(4));
-
-                            magnitudeStr = '' + (magnitude > 1 ? maxMagnitude.toFixed(4) : magnitude.toFixed(4));
-                            radianStr = '' + radians.toFixed(4);
-                            rotationStr = '' + (rotation.toFixed(4) >= 0 ? '+' + rotation.toFixed(4) : rotation.toFixed(4));
-                            tiltStr = '' + (tilt.toFixed(4) >= 0 ? '+' + tilt.toFixed(4) : tilt.toFixed(4));
-
-                            msg = {
-                                'magnitude': magnitudeStr,
-                                'radians': radianStr,
-                                'rotation': rotationStr === '0.0000' ? '+0.0000' : rotationStr,
-                                'tilt': tiltStr === '0.0000' ? '+0.0000' : tiltStr
-                            };
-
-                            if(socket){
-                                if (currentTimestamp - prevMessageTimestamp > 100) {
-                                    //console.log('emitting message');
-                                    socket.emit('controller', msg);
-                                    prevMessageTimestamp = currentTimestamp;
-                                    prevMessage = msg;
-                                }
-                            }
+                            prevAxesStates[gamepadId] = gamepad.axes; 
                         };
 
                     /**
@@ -577,7 +506,7 @@ define([
                 // is initiated, just in case someone updates a scope in the callback
                 this.__listeners[callback.__uuid] = function (event) {
                     $rootScope.$apply(function () {
-                        callback.apply(event.detail.gamepad);
+                        callback.apply(event.detail.gamepad, [event.detail.gamepad]);
                     });
                 };
 
@@ -587,16 +516,15 @@ define([
 
             GamepadService.prototype.off = function (eventName, callback) {
                 // If the passed callback has an __uuid property, then this is
-                // a reference to a function passed to on() earlier (otherwise it's
-                // probably an anonymous function), so it can be removed as a
-                // listener.
+                // a reference to a function passed to on() earlier, so it can be removed
+                // as a listener (otherwise it's probably an anonymous function).
                 if (_.has(callback, '__uuid')) {
                     document.removeEventListener(eventName, this.__listeners[callback.__uuid], false);
                     // Delete the function from the listeners object
                     delete this.__listeners[callback.__uuid];
                 } else {
                     // Log a message to indicate that off() can't do anything
-                    console.log('The function passed could not be identified for removal as a listener');
+                    console.log('GamepadService: The function passed could not be identified for removal as a listener. You cannot remove anonymous functions as listeners.');
                 }
             };
 

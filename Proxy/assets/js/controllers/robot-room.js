@@ -1,32 +1,34 @@
 define([
-    'angular',
-    'services'
-], function (angular, services) {
+    'angular'
+], function (angular) {
     'use strict';
 
     angular.module('app.controllers.robot-room', ['app.services'])
-        .controller('robotRoom', ['$scope', 'version', 'gamepad', function ($scope, version, gamepad) {
-            $scope.scopedAppVersion = version;
-            $scope.gamepads = gamepad.gamepads;
-            $scope.gamepadSupported = gamepad.gamepadSupported;
-            $scope.gamepadConnected = gamepad.gamepadConnected;
+        .controller('robotRoom', [
+            '$scope',
+            'version',
+            'gamepad',
+            'remoteControl',
+            function ($scope, version, gamepad, remoteControl) {
+                console.log('remoteControl: ', remoteControl);
+                $scope.scopedAppVersion = version;
+                $scope.gamepads = gamepad.gamepads;
+                $scope.gamepadSupported = gamepad.gamepadSupported;
+                $scope.gamepadConnected = gamepad.gamepadConnected;
 
-            console.log('connected: ', gamepad.gamepadConnected);
+                gamepad.on('gamepad_connected', function () {
+                    $scope.gamepadConnected = true;
+                });
 
-            gamepad.on('gamepad_connected', function () {
-                $scope.gamepadConnected = true;
-                console.log('got here');
-            });
+                gamepad.on('gamepad_disconnected', function () {
+                    if (!this.length) {
+                        $scope.gamepadConnected = false;
+                    }
+                });
 
-            gamepad.on('gamepad_disconnected', function () {
-                if (!this.length) {
-                    $scope.gamepadConnected = false;
-                }
-            });
-
-            gamepad.on('up_pressed', function () {
-                console.log('up pressed');
-                console.log('gamepad: ', this);
-            });
-        }]);
+                gamepad.on('up_pressed', function (gamepad) {
+                    console.log('gamepad: ', gamepad);
+                });
+            }
+        ]);
 });

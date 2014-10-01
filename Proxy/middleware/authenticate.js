@@ -15,8 +15,6 @@ module.exports = function (app) {
             return next();
         }
 
-        console.log('got to auth middleware');
-
         // Check if the user is authenticated and set the user as a local
         // variable for templates
         if (req.isAuthenticated()) {

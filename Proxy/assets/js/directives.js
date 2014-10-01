@@ -1,13 +1,10 @@
 define([
-    'jquery',
-    'lodash',
     'angular',
-    'services',
     'directives/video',
     'directives/control',
     'directives/context-menu',
     'directives/robot-list'
-], function ($, _, angular, services) {
+], function (angular) {
     'use strict';
 
     /* Directives */

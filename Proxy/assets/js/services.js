@@ -1,11 +1,15 @@
 define([
     'angular',
     'socketio',
-    'services/gamepad'
+    'services/gamepad',
+    'services/remote-control'
 ], function (angular, io) {
     
     /* Services */
-    angular.module('app.services', ['app.services.gamepad'])
+    angular.module('app.services', [
+        'app.services.gamepad',
+        'app.services.remoteControl'
+    ])
         // Websocket
         .factory('socket', ['socketFactory', function (socketFactory) {
             var clientSocket = io.connect('/remote');

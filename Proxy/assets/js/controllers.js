@@ -1,6 +1,5 @@
 define([
     'angular',
-    'services',
     'controllers/dashboard',
     'controllers/robot-room'
 ], function (angular) {

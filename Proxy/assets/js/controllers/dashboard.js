@@ -1,7 +1,6 @@
 define([
     'angular',
-    'services'
-], function (angular, services) {
+], function (angular) {
     'use strict';
 
     angular.module('app.controllers.dashboard', ['app.services'])

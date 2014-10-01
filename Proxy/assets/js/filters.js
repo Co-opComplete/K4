@@ -1,7 +1,6 @@
 define([
-    'angular',
-    'services'
-], function (angular, services) {
+    'angular'
+], function (angular) {
     
     /* Filters */
     angular.module('app.filters', ['app.services'])

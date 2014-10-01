@@ -19,11 +19,20 @@ define([
         })
         .state('control', {
             url: '/control',
+            resolve: {
+                'remoteControl': 'remoteControl'
+            },
             views: {
                 'content': {
                     templateUrl: 'assets/partials/control.html',
                     controller: 'robotRoom'
                 }
+            },
+            onEnter: function (remoteControl) {
+                remoteControl.connect();
+            },
+            onExit: function (remoteControl) {
+                remoteControl.disconnect();
             }
         });
     }]);

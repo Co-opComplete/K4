@@ -1,12 +1,12 @@
 define([
     'angular',
-    'filters',
     'services',
+    'filters',
     'directives',
     'controllers',
     'angularUIRouter',
     'angularSocketIO'
-], function (angular, filters, services, directives, controllers) {
+], function (angular) {
     'use strict';
 
     var app = angular.module('app', [
