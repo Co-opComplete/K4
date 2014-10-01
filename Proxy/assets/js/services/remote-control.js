@@ -13,14 +13,29 @@ define([
                 this.connect = function () {
                     this.connected = true;
                     gamepad.on('axes_changed', onAxesChanged);
+
+                    // Re-emit the last message every 250 ms if nothing is being
+                    // emitted by a change event as a pulse
+                    tickInterval = setInterval(function () {
+                        
+                        var currentTimestamp = new Date().getTime();
+                        if (currentTimestamp - prevMessageTimestamp > 250) {
+                            socket.emit('controller', prevMessage);
+                            prevMessageTimestamp = currentTimestamp;
+                        }
+                    }, 250);
                 };
 
                 this.disconnect = function () {
                     this.connected = false;
-                    gamepad.off('axes_changed', onAxesChanged);
+                    gamepad.off('axes_changed', onAxesChanged); 
+
+                    // Stop emitting the pulse message
+                    clearInterval(tickInterval);
                 };
 
                 var that = this,
+                    tickInterval,
                     prevMessageTimestamp = new Date().getTime(),
                     prevMessage = {magnitude: '0.0000', radians: '0.0000', rotation: '+0.0000', tilt: '+0.0000'},
                     onAxesChanged = function (gamepad) {
@@ -80,7 +95,6 @@ define([
 
                         if(socket){
                             if (currentTimestamp - prevMessageTimestamp > 100) {
-                                console.log('emitting message');
                                 socket.emit('controller', msg);
                                 prevMessageTimestamp = currentTimestamp;
                                 prevMessage = msg;
