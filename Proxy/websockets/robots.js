@@ -1,7 +1,10 @@
-var Robot = require('../models/robot');
+var _ = require('lodash'),
+    Robot = require('../models/robot');
 
 module.exports = function (app, io) {
-    var robots = app.get('websocketConnections').robots;
+    var robots = app.get('websocketConnections').robots,
+        clients = app.get('websocketConnections').clients,
+        connections = app.get('connections');
 
     return io.of('/robot').on('connection', function (socket) {
         console.log('got robot connnection');
@@ -15,7 +18,7 @@ module.exports = function (app, io) {
             socket.send('OMGZ it worked!!!');
         });
 
-        socket.on('announceIP', function (data) {
+        socket.on('announceId', function (data) {
             Robot.findOne({ mac: data.mac }, function(err, robot) {
                 if (err) {
                     console.log('error finding robot: ', err);
@@ -26,7 +29,7 @@ module.exports = function (app, io) {
                         robot = new Robot({
                             mac: data.mac,
                             ip: data.ip,
-                            name: 'K4'
+                            name: data.name
                         }); 
                     }
                     robot.socket = socket;
@@ -48,6 +51,24 @@ module.exports = function (app, io) {
         socket.on('disconnect', function (){
             console.log('Disconnecting');
             delete robots[socket.id];
+
+            // If there is a connected client, announce the disconnect and delete
+            // the connection
+            var openConnectionId = _.findKey(connections, function (c) {return c.robot === socket.id;});
+            if (openConnectionId) {
+                clients[connections[openConnectionId].client].emit('robotDisconnecting');
+                delete connections[openConnectionId];
+            }
+
+            // Make sure everyone knows this robot is disconnecting
+            app.get('rooms').clients.emit('updateRobots', robots);
         });
+
+        // {{{ Client connection endpoints
+
+        socket.on('initConnect', function (connectionId) {
+        });
+
+        // }}}
     });
 };

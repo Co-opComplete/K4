@@ -7,8 +7,8 @@
         "socket.io": "1.1.x",
         "sugar": "1.4.x",
         "nconf": "0.6.x",
-        "getconfig": "0.3.0",
-        "lodash": "2.4.x",
+        "getconfig": "^0.3.0",
+        "lodash": "^2.4.x",
         "mongodb": "^1.4.5",
         "mongoose": "^3.8.11",
         "passport": "^0.2.0",
@@ -25,7 +25,8 @@
         "bcrypt": "^0.8.0",
         "validator": "^3.19.0",
         "hiredis": "^0.1.17",
-        "redis": "^0.12.1"
+        "redis": "^0.12.1",
+        "node-uuid": "^1.4.1"
     },
     "devDependencies": {},
     "keywords": [

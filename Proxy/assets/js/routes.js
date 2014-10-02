@@ -8,8 +8,11 @@ define([
         $urlRouterProvider.otherwise('/');
 
         // Setup the states
-        $stateProvider.state('base', {
+        $stateProvider.state('dashboard', {
             url: '/',
+            resolve: {
+                'socket': 'socket'
+            },
             views: {
                 'content': {
                     templateUrl: 'assets/partials/dashboard.html',

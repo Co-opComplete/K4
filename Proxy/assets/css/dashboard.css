@@ -1,0 +1,23 @@
+.error {
+    color: red;
+    display: block;
+}
+
+.robots {
+    list-style-type: none;
+    display: inline-block;
+    padding: 0;
+}
+
+.robots .robot {
+    padding: 5px;
+    border: 1px solid #666;
+}
+
+.robots .robot span {
+    margin-right: 15px;
+}
+
+.robots .robot em {
+    font-weight: bold;
+}

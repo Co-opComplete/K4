@@ -8,9 +8,6 @@ define([
         .directive('robotList', ['socket', function (socket) {
             return {
                 link: function (scope, el, attrs) {
-                        socket.on('updateRobots', function (data) {
-                            console.log('robots data: ', data);
-                        });
                     }
             };
         }]);

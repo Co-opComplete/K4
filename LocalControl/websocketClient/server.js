@@ -1,5 +1,6 @@
 var serialport = require('serialport'), 
     getmac = require('getmac'),
+    config = require('getconfig'),
     _ = require('lodash'),
     os = require('os'),
     ifaces = os.networkInterfaces();
@@ -44,7 +45,7 @@ var serialport = require('serialport'),
                 }
             });
 
-            socket.emit('announceIP', {mac: macAddress, ip: ip});
+            socket.emit('announceId', {mac: macAddress, ip: ip, name: config.robotName});
         });
 
         socket.on('message', function (data) {

@@ -4,7 +4,7 @@
     "description": "Middleware service for proxying commands to and from K4",
     "main": "./server.js",
     "dependencies": {
-        "nconf": "0.6.x",
+        "getconfig": "^0.3.0",
         "i2c": "0.1.4",
         "lodash": "2.4.x",
         "rasp2c": "0.0.3",

@@ -27,6 +27,9 @@ app.set('rootPath', __dirname);
 // Rooms
 app.set('rooms', {});
 
+// Client-to-Robot connections
+app.set('connections', {});
+
 // Global Paths
 app.set('paths', {
     views: path.join(app.get('rootPath'), 'views'),
