@@ -1,9 +1,9 @@
 /*
-  IRhinoMotorController.h - Interface for controlling Rhino Motors
+  IMotorController.h - Interface for controlling motors
 */
 
-#ifndef __IRhinoMotorController_H__
-#define __IRhinoMotorController_H__
+#ifndef __IMotorController_H__
+#define __IMotorController_H__
 
 #include <Arduino.h>
 
@@ -22,4 +22,4 @@ class IMotorController
 };
 
 
-#endif /* __IRhinoMotorController_H__ */
+#endif /* __IMotorController_H__ */
