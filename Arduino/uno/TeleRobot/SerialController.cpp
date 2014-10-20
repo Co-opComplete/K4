@@ -1,10 +1,9 @@
 /*
-  RhinoMotorControllerUart.h - Serial implementation for controlling a Rhino Motor
+  SerialController.cpp - Serial implementation for controlling a Rhino Motor
 */
 #include <Arduino.h>
 #include <SoftwareSerial.h>
-#include "I2cRhinoMotorController.h"
-#include "SerialRhinoMotorController.h"
+#include "SerialController.h"
 
 SerialController::SerialController()
 { }
@@ -13,48 +12,49 @@ void SerialController::Attach(int rxPin, int txPin, int baud)
 {
   _port = new SoftwareSerial(rxPin, txPin);
   _port->begin(baud);
+  EOT = "\n\r";
 }
 
-void SerialController::WriteMaxSpeed(float value)
+void SerialController::SetMaxSpeed(float value)
 {
   if (_port)
   {
     _port->print("M");
-    _port->print(ConvertValue(value));
-    _port->print("\n\r");
+    _port->print(String(ConvertValue(value)));
+    _port->print(EOT);
   }
 }
 
-void SerialController::WriteSpeed(float value)
+void SerialController::SetSpeed(float value)
 {
    // check to make sure that the serial port is ready
   if (_port)
   {
     _port->print("S");
-    _port->print(ConvertValue(value));
-    _port->print("\n\r");
+    _port->print(String(ConvertValue(value)));
+    _port->print(EOT);
   }
 }
 
-void SerialController::WriteDamping(float value)
+void SerialController::SetDamping(float value)
 {
    // check to make sure that the serial port is ready
   if (_port)
   {
     _port->print("D");
-    _port->print(ConvertValue(value));
-    _port->print("\n\r");
+    _port->print(String(ConvertValue(value)));
+    _port->print(EOT);
   }
 }
 
-void SerialController::WriteRelativePosition(long value)
+void SerialController::SetRelativePosition(long value)
 {
      // check to make sure that the serial port is ready
   if (_port)
   {
     _port->print("R");
     _port->print(value);
-    _port->print("\n\r");
+    _port->print(EOT);
   }
 }
     
@@ -65,14 +65,15 @@ bool SerialController::RestoreDefaults()
    // check to make sure that the serial port is ready
   if (_port)
   {
-    _port->print("Y\n\r");
+    _port->print("Y");
+    _port->print(EOT);
     successful = true;
   }
  
   return successful;
 }
 
-bool SerialController::WriteI2cAddress(int address)
+bool SerialController::SetI2cAddress(int address)
 {
     bool successful = false;
   
@@ -80,8 +81,9 @@ bool SerialController::WriteI2cAddress(int address)
   if (_port)
   {
     _port->print("E");
-    _port->print(address);
-    _port->print("\n\r");
+    _port->print(address << 1);
+    _port->print(EOT);
+
     successful = true; // mayhaps look into reading back i2c address to confirm
   }
   
@@ -90,8 +92,7 @@ bool SerialController::WriteI2cAddress(int address)
 
 float SerialController::ReadSpeed()
 {
-  int value = 0;
-//  char buf[20];
+//  int value = 0;
 //  int i = 0;
 //  
 //  if (_port)
@@ -102,19 +103,19 @@ float SerialController::ReadSpeed()
 //    }
 //    
 //    _port->print("S");
-//    _port->print("\n\r");
+//    _port->print(EOT);
 //    _port->flush();
 //    
 //    Serial.print("ReadSpeed: ");
 //    while (_port->available())
 //    {
-//      Serial.write(_port->read());
+//      Serial.print(_port->read());
 //    }
 //    Serial.println("");
 //
 //  }
-  
-  return ConvertValue(value);
+//  
+//  return ConvertValue(value);
 }
 
 float SerialController::ReadMaxSpeed()
@@ -152,7 +153,7 @@ float SerialController::ReadDamping()
 //    { delay(10); }
 //    
 //    while (_port->available())
-//    { Serial.write( _port->read()); Serial.print("  "); }   
+//    { Serial.Set( _port->read()); Serial.print("  "); }   
 //  }
   
   return ConvertValue(value);
@@ -176,4 +177,13 @@ long SerialController::ReadPosition()
 //  }
   
   return ConvertValue(value);
+}
+
+void SerialController::SerialDump()
+{
+  if (_port)
+  {
+//    while(_port->available())
+//    { Serial.print(_port->read()); }
+  }
 }

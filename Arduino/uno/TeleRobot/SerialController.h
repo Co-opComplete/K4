@@ -1,25 +1,24 @@
 /*
-  RhinoMotorControllerUart.h - Serial implementation for controlling a Rhino Motor
+  SerialController.h - Serial implementation for controlling a Rhino Motor
 */
 
 #ifndef __SerialController_H__
 #define __SerialController_H__
 
 #include <Arduino.h>
-//#include <HardwareSerial.h>
 #include <SoftwareSerial.h>
 #include "IMotorController.h"
-#include "I2cRhinoMotorController.h"
+#include "I2cController.h"
 
 class SerialController : public IMotorController
 {
   private:
-    //HardwareSerial& _port = Serial;
     SoftwareSerial *_port;
+    String EOT;
     
     int ConvertValue(float value)
     {
-      value = min(-1.0f, max(value, 1.0f)); // Force value within acceptable range [-1.0f, 1.0f]
+      value = max(-1.0f, min(value, 1.0f)); // Force value within acceptable range [-1.0f, 1.0f]
       return value * 255;
     }
     
@@ -31,21 +30,21 @@ class SerialController : public IMotorController
   public:
     SerialController();
     
-    //void Attach(HardwareSerial& port, int baud);
     void Attach(int rxPin, int txPin, int baud);
     
-    virtual void WriteMaxSpeed(float value);
-    virtual void WriteSpeed(float value);
-    virtual void WriteDamping(float value);
-    virtual void WriteRelativePosition(long value);
+    virtual void SetMaxSpeed(float value);
+    virtual void SetSpeed(float value);
+    virtual void SetDamping(float value);
+    virtual void SetRelativePosition(long value);
     
     virtual float ReadSpeed();
     virtual float ReadMaxSpeed();
     virtual float ReadDamping();
-    virtual long ReadPosition();
+    virtual long  ReadPosition();
     
     bool RestoreDefaults();
-    bool WriteI2cAddress(int address);
+    bool SetI2cAddress(int address);
+    void SerialDump();
 };
 
 #endif /* __SerialController_H__ */

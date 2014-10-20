@@ -6,11 +6,11 @@
 #define __Mecanum_H__
 
 #include <Arduino.h>
-#include "IMotionController.h"
-#include "MotionStatus.h"
+#include "IDrive.h"
+#include "Status.h"
 #include "IMotorController.h"
 
-class Mecanum : public IMotionController
+class Mecanum : public IDrive
 {
   private:
     IMotorController *MA;
@@ -20,6 +20,7 @@ class Mecanum : public IMotionController
     
   public:
     virtual void Attach(IMotorController *MA, IMotorController *MB, IMotorController *MC, IMotorController *MD);
+    virtual void Configure(float maxSpeed, float damping);
     virtual bool Move(Vector translation, float rotation);
     virtual bool IsClear(Vector vector);
     //virtual MotionStatus GetStatus();

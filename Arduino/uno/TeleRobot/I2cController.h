@@ -13,31 +13,23 @@ class I2cController : public IMotorController
   private:
     int i2cAddress;
     
-    int ConvertValue(float value)
-    {
-      value = min(-1.0f, max(value, 1.0f)); // Force value within acceptable range [-1.0f, 1.0f]
-      return value * 255;
-    }
-    
-    float ConvertValue(int value)
-    {
-      return value / 255;
-    }
+    int ConvertValue(float value);
+    float ConvertValue(int value);
     
   public:
     I2cController();
     
     void Attach(int address);
     
-    virtual void WriteMaxSpeed(float value);
-    virtual void WriteSpeed(float value);
-    virtual void WriteDamping(float value);
-    virtual void WriteRelativePosition(long value);
+    virtual void SetMaxSpeed(float value);
+    virtual void SetSpeed(float value);
+    virtual void SetDamping(float value);
+    virtual void SetRelativePosition(long value);
     
     virtual float ReadSpeed();
     virtual float ReadMaxSpeed();
     virtual float ReadDamping();
-    virtual long ReadPosition();
+    virtual long  ReadPosition();
 };
 
 #endif /* __I2cController_H__ */
