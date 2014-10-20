@@ -12,10 +12,11 @@ module.exports = function (app, io) {
         socket.join('robot');
         //robots.push(socket);
 
-        socket.on('message', function (data) {
-            console.log('got message: ', data);
-
-            socket.send('OMGZ it worked!!!');
+        socket.on('serialLog', function (data) {
+            var openConnectionId = _.findKey(connections, function (c) {return c.robot === socket.id;});
+            if (openConnectionId) {
+                clients[connections[openConnectionId].client].emit('serialLog', data);
+            }
         });
 
         socket.on('announceId', function (data) {

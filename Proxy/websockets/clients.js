@@ -156,8 +156,9 @@ module.exports = function (app, io) {
 
         // Controller Action
         socket.on('controller', function (data) {
-            if (robots[_.keys(robots)[0]]) {
-                robots[_.keys(robots)[0]].socket.emit('controller', data);
+            var openConnectionId = _.findKey(connections, function (c) {return c.client === socket.id;});
+            if (openConnectionId) {
+                robots[connections[openConnectionId].robot].socket.emit('controller', data);
             }
         });
 

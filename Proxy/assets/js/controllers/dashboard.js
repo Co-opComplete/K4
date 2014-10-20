@@ -14,7 +14,7 @@ define([
                 $scope.connectError = null;
 
                 var onConnectSuccess = function () {
-                        $state.go('control');
+                        $state.go('robot-room');
                     },
                     onConnectError = function (msg) {
                         $scope.connectError = msg;

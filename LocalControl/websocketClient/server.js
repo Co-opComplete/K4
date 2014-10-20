@@ -76,14 +76,13 @@ var serialport = require('serialport'),
 
         socket.on('controller', function (data) {
             //console.log('got controller data: ', new Date().getTime());
-            /*
             console.log('got controller data: ', {
                 'magnitude': data.magnitude,
                 'radians': data.radians,
                 'rotation': data.rotation,
                 'tilt': data.tilt
             });
-            */
+            socket.emit('serialLog', 'Writing: ' + '#' + data.magnitude + ',' + data.radians + ',' + data.rotation + ',' + data.tilt + ';');
 
             /*******************************************************************************
             * Send movement commands in comma separated value with a ; ending

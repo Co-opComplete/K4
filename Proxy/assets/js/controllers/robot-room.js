@@ -15,6 +15,8 @@ define([
                 $scope.gamepads = gamepad.gamepads;
                 $scope.gamepadSupported = gamepad.gamepadSupported;
                 $scope.gamepadConnected = gamepad.gamepadConnected;
+                $scope.serialLogs = [];
+                $scope.proxyLogs = [];
 
                 // Make sure when we leave this page, we are announcing the destruction
                 // of the connection
@@ -28,6 +30,15 @@ define([
                         if (!this.length) {
                             $scope.gamepadConnected = false;
                         }
+                    },
+                    onSerialLog = function (data) {
+                        $scope.serialLogs.push(JSON.stringify(data));
+                    },
+                    onProxyLog = function (data) {
+                        $scope.proxyLogs.push(JSON.stringify(data));
+                    },
+                    onRobotDisconnecting = function () {
+                        $state.go('dashboard');
                     };
 
                 gamepad.on('gamepad_connected', onGamepadConnected);
@@ -38,16 +49,22 @@ define([
                     console.log('gamepad: ', gamepad);
                 }); 
 
-                socket.on('robotDisconnecting', function () {
-                    console.log('got here');
-                    $state.go('dashboard');
-                });
+                // When the robot disconnects, go back to the dashboard
+                socket.on('robotDisconnecting', onRobotDisconnecting);
 
-                // Make sure we unsubscribe any listeners when this scope is destroyed
+                // Listen for serial and proxy logs to append to the log list
+                socket.on('serialLog', onSerialLog);
+                socket.on('proxyLog', onProxyLog);
+
+                // Make sure we unsubscribe any listeners when this scope is destroyed and
+                // disconnect the remote-control
                 $scope.$on('$destroy', function () {
                     destroyOnStateChangeStart();
                     gamepad.off('gamepad_connected', onGamepadConnected);
                     gamepad.off('gamepad_disconnected', onGamepadDisconnected);
+                    socket.removeListener('robotDisconnecting', onRobotDisconnecting);
+                    socket.removeListener('serialLog', onSerialLog);
+                    socket.removeListener('proxyLog', onProxyLog);
                 });
             }
         ]);

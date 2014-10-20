@@ -1,0 +1,8 @@
+.logs .serial-logs-wrapper, .logs .proxy-logs-wrapper {
+    width: 50%;
+    float: left;
+}
+
+.logs h2 {
+    border-bottom: 1px solid #666;
+}

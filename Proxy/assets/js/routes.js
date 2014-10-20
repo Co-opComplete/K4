@@ -20,14 +20,14 @@ define([
                 }
             }
         })
-        .state('control', {
-            url: '/control',
+        .state('robot-room', {
+            url: '/robot-room',
             resolve: {
                 'remoteControl': 'remoteControl'
             },
             views: {
                 'content': {
-                    templateUrl: 'assets/partials/control.html',
+                    templateUrl: 'assets/partials/robot-room.html',
                     controller: 'robotRoom'
                 }
             },

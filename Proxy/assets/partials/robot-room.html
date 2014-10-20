@@ -5,12 +5,6 @@
     <video id="remote-video" autoplay="autoplay" controls="true"></video>
 </div>
 
-<div id="robots" robot-list>
-    <h1>Robots</h1>
-    <ul id="robots-list">
-    </ul>
-</div>
-
 <div id="no-gamepad-support" ng-hide="gamepadSupported">
     Your browser does not seem to support Gamepad API, or it might be
     we’re not detecting it very well. Sorry!
@@ -20,10 +14,24 @@
     press any of its buttons to activate it.
 </div>
 
-<div id="gamepads" ng-show="gamepadConnected" k4-controller>
+<div id="gamepads" ng-show="gamepadConnected">
     <div class="gamepad" ng-repeat="gamepad in gamepads">
         <h2>{{gamepad.id}}</h2>
         <span>{{gamepad.index}}</span>
         <p>{{gamepad.buttons}}</span>
+    </div>
+</div>
+
+<div id="logs" class="logs">
+    <div id="serial-logs" class="serial-logs-wrapper">
+        <h2>Serial Logs</h2>
+        <ul class="serial-logs">
+            <li class="log" ng-repeat="log in serialLogs track by $index">{{log}}</li>
+        </ul>
+    </div>
+    <div id="proxy-logs"class="proxy-logs-wrapper">
+        <h2>Proxy Logs</h2>
+        <ul class="proxy-logs">
+        </ul>
     </div>
 </div>
