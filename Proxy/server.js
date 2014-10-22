@@ -16,6 +16,7 @@ var os = require('os'),
     nconf = require('nconf'),
     sugar = require('sugar'),
     swig = require('swig'),
+    dbAddress = process.env.MONGODB_PORT_27017_TCP_ADDR + ':' + process.env.MONGODB_PORT_27017_TCP_PORT,
     sockets;
 
 // Config colors for logging
@@ -58,7 +59,7 @@ _.each(_.keys(ifaces), function (iface) {
 });
 
 // connect to the database
-mongoose.connect('mongodb://localhost/K4');
+mongoose.connect('mongodb://' + dbAddress + '/K4');
 
 /*******************************
 ----- Authentication Setup -----
