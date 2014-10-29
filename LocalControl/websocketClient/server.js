@@ -3,6 +3,7 @@ var serialport = require('serialport'),
     config = require('getconfig'),
     _ = require('lodash'),
     os = require('os'),
+    proxyHost = process.env.PROXY_PORT_8000_TCP_ADDR + ':' + process.env.PROXY_PORT_8000_TCP_PORT,
     ifaces = os.networkInterfaces();
     /*
     serialPort = new serialport.SerialPort('/dev/ttyAMA0', {
@@ -12,7 +13,7 @@ var serialport = require('serialport'),
     */
 
 //serialPort.on('open', function () {
-    var socket = require('socket.io-client')('ws://localhost:8000/robot');
+    var socket = require('socket.io-client')('ws://' + proxyHost + '/robot');
 
     console.log('Serial port opened');
 

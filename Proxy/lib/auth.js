@@ -38,6 +38,16 @@ passport.use(new GitHubStrategy(config.githubStrategy, function(accessToken, ref
             console.log('Error finding user: '.error, JSON.stringify(err, null, 2).error);
         }
         if (!err && user !== null) {
+            /*
+            user.username = 'yeluapyeroc';
+            user.password = 'test';
+            user.save(function (err) {
+                if (err) {
+                    console.log('Error saving');
+                }
+                    done(err, user);
+            });
+            */
             done(null, user);
         } else {
             user = new User({
