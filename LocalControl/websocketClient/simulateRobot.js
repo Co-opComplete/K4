@@ -4,20 +4,24 @@ var serialport = require('serialport'),
     _ = require('lodash'),
     os = require('os'),
     proxyHost = process.env.PROXY_PORT_8000_TCP_ADDR + ':' + process.env.PROXY_PORT_8000_TCP_PORT,
-    ifaces = os.networkInterfaces(),
+    ifaces = os.networkInterfaces();
+    /*
     serialPort = new serialport.SerialPort('/dev/ttyAMA0', {
         baudrate: 9600,
         parser: serialport.parsers.readline('\n')
     }); 
+    */
 
-serialPort.on('open', function () {
+//serialPort.on('open', function () {
     var socket = require('socket.io-client')('ws://' + proxyHost + '/robot');
 
     console.log('Serial port opened');
 
+    /*
     serialPort.on('data', function (data) {
         console.log('data received: ', data);
     });
+    */
 
     socket.on('connect', function() {
         console.log('connected to socket'); 
@@ -84,6 +88,7 @@ serialPort.on('open', function () {
             /*******************************************************************************
             * Send movement commands in comma separated value with a ; ending
             ********************************************************************************/
+            /*
             serialPort.write('#' + data.magnitude + ',' + data.radians + ',' + data.rotation + ',' + data.tilt + ';', function (err, results) {
                 if (err) {
                     socket.send('error writing serial data');
@@ -91,6 +96,58 @@ serialPort.on('open', function () {
                     socket.send('successfully wrote serial data');
                 }
             });
+            */
+
+            /*
+            // Write sign for value
+            serialPort.write((data['stick-1-y'] >= 0 ? '+' : '-'), function (err, results) {
+                if (err) {
+                    console.log('got error writing "+" after "l": ', err);
+                }else{
+                    console.log('write "+" after "l" results: ', results);
+                }
+            });
+
+            // Convert value to absolute value percentage and send
+            serialPort.write(String.fromCharCode(Math.floor(Math.abs(data['stick-1-y']) * 100)), function (err, results) {
+                if (err) {
+                    console.log('got error writing value after "l": ', err);
+                }else{
+                    console.log('write value after "l" results: ', results);
+                }
+            });
+            */
+
+            /*******************************************************************************
+            * Send data for right wheels
+            ********************************************************************************/
+            /*
+            serialPort.write('r' + r_sign + r_val, function (err, results) {
+                if (err) {
+                    console.log('got error writing "r": ', err);
+                }else{
+                    console.log('write "r" results: ', results);
+                }
+            });
+
+            // Write sign for value
+            serialPort.write((data['stick-2-y'] >= 0 ? '+' : '-'), function (err, results) {
+                if (err) {
+                    console.log('got error writing "+" after "r": ', err);
+                }else{
+                    console.log('write "+" after "r" results: ', results);
+                }
+            });
+
+            // Convert value to absolute value percentage and send
+            serialPort.write(String.fromCharCode(Math.floor(Math.abs(data['stick-2-y']) * 100)), function (err, results) {
+                if (err) {
+                    console.log('got error writing value after "r": ', err);
+                }else{
+                    console.log('write value after "r" results: ', results);
+                }
+            });
+            */
         });
 
         socket.on('disconnect', function () {
@@ -99,4 +156,4 @@ serialPort.on('open', function () {
 
         socket.send('This is a message!');
     });
-});
+//});

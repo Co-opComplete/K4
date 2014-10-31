@@ -1,3 +1,4 @@
+import os
 from fabric import api as fab
 # from fabric.utils import puts
 
@@ -13,6 +14,14 @@ def buildImages():
         # Build the MongoDB image
         with fab.lcd('./Proxy/MongoImage'):
             fab.local('sudo docker build -t devspacenine/mongo .')
+
+        # Add the data directory if it doesn't exist
+        if not os.path.exists('data'):
+            os.makedirs('data')
+
+        # Build the turnserver image
+        with fab.lcd('./Proxy/TurnserverImage'):
+            fab.local('sudo docker build -t devspacenine/turnserver .')
 
         # Build the robot client image
         with fab.lcd('./LocalControl/websocketClient'):
@@ -34,8 +43,15 @@ def buildImages():
         if proxyContainer:
             fab.local('sudo docker rm -f proxy')
 
+        turnserverContainer = fab.local('sudo docker ps -a | grep turnserver', capture=True)
+        if turnserverContainer:
+            fab.local('sudo docker rm -f turnserver')
+
         # Run the mongo container
         fab.local('sudo docker run -itd -p 27017 -v {}/data:/data/db --name mongodb devspacenine/mongo'.format(workingDir))
+
+        # Run the turnserver container
+        fab.local('sudo docker run -itd -p 8001 --name turnserver devspacenine/turnserver')
 
 
 def up():
