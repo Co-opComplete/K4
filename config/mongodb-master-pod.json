@@ -1,0 +1,17 @@
+{
+  "apiVersion": "v1beta1",
+  "kind": "Pod",
+  "id": "mongodb-master-pod",
+  "desiredState": {
+    "manifest": {
+      "version": "v1beta1",
+      "id": "mongodb-master-pod",
+      "containers": [{
+        "name": "mongodb-master",
+        "image": "devspacenine/mongodb",
+        "ports": [{ "name": "mongodb-server", "containerPort": 27017 }]
+      }]
+    }
+  },
+  "labels": { "name": "mongodb", "role": "master" }
+}

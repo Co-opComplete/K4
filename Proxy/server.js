@@ -19,6 +19,8 @@ var os = require('os'),
     dbAddress = process.env.MONGODB_PORT_27017_TCP_ADDR + ':' + process.env.MONGODB_PORT_27017_TCP_PORT,
     sockets;
 
+console.log('got here!!!!!!!!');
+
 // Config colors for logging
 colors.setTheme(config.colors);
 
