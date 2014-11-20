@@ -45,6 +45,7 @@ Message::Message(uint16_t header, uint8_t len, void* data)
 {
   this->header = header;
   this->len = len;
+  this->data = operator new(len);
   memcpy(this->data, data, len);
 }
 
