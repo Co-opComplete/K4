@@ -14,12 +14,14 @@
 #define STATUS        02 // General status
 #define SLEEP         03 // Enter low power usage mode
 #define WAKE          04 // Enter normal mode
-#define BATTERY       05 // Battery cell count and voltage levels
-#define SONAR         06 // Sonar ID and distance to obstructions in inches
-#define COMPASS       07
-#define ACCELEROMETER 08
-#define IR            09 // Reserved for future use
-#define MOVE          10 // Translation, Rotation, and Camera Tilt
+#define CHARGE        05 // Attempt to charge
+#define BATTERY       06 // Battery cell count and voltage levels
+#define SONAR         07 // Sonar ID and distance to obstructions in inches
+#define COMPASS       08
+#define ACCELEROMETER 09
+#define TEMPERATURE   10
+#define IR            11 // Reserved for future use
+#define MOVE          12 // Translation, Rotation, and Camera Tilt
 
 using namespace std;
 
